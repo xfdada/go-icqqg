@@ -1,0 +1,81 @@
+definitions:
+  model.User:
+    properties:
+      created_at:
+        description: 创建时间
+        type: string
+      email:
+        description: 邮箱
+        type: string
+      id:
+        description: id
+        type: integer
+      mobile:
+        description: 手机号
+        type: string
+      password:
+        description: 密码
+        type: string
+      token:
+        description: token
+        type: string
+      updated_at:
+        description: 更新时间
+        type: string
+      user_name:
+        description: 用户名
+        type: string
+    type: object
+info:
+  contact:
+    email: xiangfudada@163.com
+    name: Xfdada
+  title: ICQQG接囗文档
+  version: "1.0"
+paths:
+  /api/v1/get_token:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 请求错误
+          schema:
+            type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 获取token
+  /api/v1/user/{id}:
+    get:
+      parameters:
+      - description: 用户ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 用户token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/model.User'
+        "400":
+          description: 请求错误
+        "500":
+          description: 内部错误
+      summary: 获取用户详细信息
+      tags:
+      - 用户接口
+swagger: "2.0"
