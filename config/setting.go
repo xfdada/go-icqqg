@@ -34,8 +34,10 @@ type Redis struct {
 }
 
 type Logger struct {
-	AppPath  string
-	SqlPath  string
-	AppLevel string
-	SqlLevel string
+	AppPath    string
+	SqlPath    string
+	AppLevel   string
+	SqlLevel   string
+	ErrorPath  string
+	ErrorLevel string
 }

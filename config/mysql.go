@@ -24,14 +24,15 @@ func NewDB() (*gorm.DB, error) {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=%s&parseTime=%v&loc=Local",
 		AppConfig.Mysql.Username, AppConfig.Mysql.Password, AppConfig.Mysql.Host, AppConfig.Mysql.DBName, AppConfig.Mysql.Charset, AppConfig.Mysql.ParseTime)
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{Logger: newLogger})
-
 	if err != nil {
-		fmt.Println("初始化连接数据库失败，错误详情是err:" + fmt.Sprintf("%v\n", err))
+		msg := "初始化连接数据库失败，错误详情是err:" + fmt.Sprintf("%v\n", err)
+		fmt.Println(msg)
 		return nil, err
 	}
 	sqlDB, err1 := db.DB()
 	if err1 != nil {
-		fmt.Println("初始化连接数据库失败，错误详情是err:" + fmt.Sprintf("%v\n", err1))
+		msg := "初始化连接数据库失败，错误详情是err:" + fmt.Sprintf("%v\n", err1)
+		fmt.Println(msg)
 		return nil, err1
 	}
 	sqlDB.SetMaxIdleConns(AppConfig.Mysql.MaxIdleConns)

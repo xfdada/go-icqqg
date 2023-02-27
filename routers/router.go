@@ -19,10 +19,12 @@ func NewRouter() *gin.Engine {
 	r.GET("/api/v1/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	user := v1.User{}
 	r.GET("/api/v1/get_token", v1.GetToken)
+	r.POST("/api/v1/user", user.AddUser)
 	apiv1 := r.Group("api/v1")
 	apiv1.Use(middleware.Jwt(), middleware.Logger())
 	{
 		apiv1.GET("/user/:id", user.GetUser)
+
 	}
 	return r
 }

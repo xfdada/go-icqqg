@@ -1,5 +1,5 @@
 Server:
-  Port:     :8081
+  Port:     :8080
   Model:    debug
 #mysql
 Mysql:
@@ -32,3 +32,5 @@ Logger:
   AppLevel: info
   SqlPath: D:/GOAPP/src/gin-icqqg/runtime/sql       #SQL日志存储位置
   SqlLevel: info
+  ErrorPath: D:/GOAPP/src/gin-icqqg/runtime/error
+  ErrorLevel: info
