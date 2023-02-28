@@ -5,19 +5,24 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
-	"log"
-	"os"
 	"time"
 )
 
+type Writer struct {
+}
+
+func (w Writer) Printf(format string, args ...interface{}) {
+	s := fmt.Sprintf(format, args...)
+	SqlLog(s)
+}
+
 func NewDB() (*gorm.DB, error) {
 	newLogger := logger.New(
-		log.New(os.Stdout, "\r\n", log.LstdFlags), // （日志输出的目标，前缀和日志包含的内容）
+		Writer{}, // io writer
 		logger.Config{
-			SlowThreshold:             time.Second,  // 慢 SQL 阈值
-			LogLevel:                  logger.Error, // 日志级别
-			IgnoreRecordNotFoundError: true,         // 忽略ErrRecordNotFound（记录未找到）错误
-			Colorful:                  true,         // 使用彩色打印
+			SlowThreshold: 100 * time.Millisecond, // 慢 SQL 阈值
+			LogLevel:      logger.Info,            // Log level
+			Colorful:      false,                  // 禁用彩色打印
 		},
 	)
 

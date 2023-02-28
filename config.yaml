@@ -34,3 +34,15 @@ Logger:
   SqlLevel: info
   ErrorPath: D:/GOAPP/src/gin-icqqg/runtime/error
   ErrorLevel: info
+Upload:
+  MaxSize:  5     #MB
+  Path:     D:/GOAPP/src/gin-icqqg/uploads/  #文件上传目录
+  Url:            /uploads
+  Ext:     #允许上传文件的后缀名
+    - .jpg
+    - .png
+    - .jpeg
+    - .zip
+    - .xlsx
+    - .doc
+    - .docx

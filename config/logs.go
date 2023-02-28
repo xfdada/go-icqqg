@@ -1,8 +1,7 @@
-package log
+package config
 
 import (
 	"fmt"
-	"gin-icqqg/config"
 	"github.com/sirupsen/logrus"
 	"os"
 	"path"
@@ -32,7 +31,7 @@ func parseLeve(s string) logrus.Level {
 
 // ErrorLog 记录错误日志
 func ErrorLog(msg string) *logrus.Logger {
-	src, err := fileObj(config.AppConfig.Logger.ErrorPath)
+	src, err := fileObj(AppConfig.Logger.ErrorPath)
 	if err != nil {
 		fmt.Println("err", err)
 	}
@@ -40,7 +39,7 @@ func ErrorLog(msg string) *logrus.Logger {
 	//设置输出
 	logger.Out = src
 	//设置日志级别
-	logger.SetLevel(parseLeve(config.AppConfig.Logger.ErrorLevel))
+	logger.SetLevel(parseLeve(AppConfig.Logger.ErrorLevel))
 	//设置日志格式
 	logger.SetFormatter(&logrus.JSONFormatter{
 		TimestampFormat: "2006-01-02 15:04:05",
@@ -55,7 +54,7 @@ func ErrorLog(msg string) *logrus.Logger {
 
 // AppLog 记录请求数据
 func AppLog(statusCode int, latencyTime time.Duration, clientIP, reqMethod, reqUri string) *logrus.Logger {
-	src, err := fileObj(config.AppConfig.Logger.AppPath)
+	src, err := fileObj(AppConfig.Logger.AppPath)
 	if err != nil {
 		fmt.Println("err", err)
 	}
@@ -64,7 +63,7 @@ func AppLog(statusCode int, latencyTime time.Duration, clientIP, reqMethod, reqU
 	//设置输出
 	logger.Out = src
 	//设置日志级别
-	logger.SetLevel(parseLeve(config.AppConfig.Logger.AppLevel))
+	logger.SetLevel(parseLeve(AppConfig.Logger.AppLevel))
 	//设置日志格式
 	logger.SetFormatter(&logrus.JSONFormatter{
 		TimestampFormat: "2006-01-02 15:04:05",
@@ -80,7 +79,7 @@ func AppLog(statusCode int, latencyTime time.Duration, clientIP, reqMethod, reqU
 }
 
 func SqlLog(s string) *logrus.Logger {
-	src, err := fileObj(config.AppConfig.Logger.SqlPath)
+	src, err := fileObj(AppConfig.Logger.SqlPath)
 	if err != nil {
 		fmt.Println("err", err)
 	}
@@ -89,7 +88,7 @@ func SqlLog(s string) *logrus.Logger {
 	//设置输出
 	logger.Out = src
 	//设置日志级别
-	logger.SetLevel(parseLeve(config.AppConfig.Logger.SqlLevel))
+	logger.SetLevel(parseLeve(AppConfig.Logger.SqlLevel))
 	//设置日志格式
 	logger.SetFormatter(&logrus.JSONFormatter{
 		TimestampFormat: "2006-01-02 15:04:05",

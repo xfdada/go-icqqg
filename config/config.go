@@ -14,6 +14,7 @@ type Config struct {
 	Jwt    *Jwt
 	Logger *Logger
 	DB     *gorm.DB
+	Upload *Upload
 }
 
 var AppConfig Config
@@ -52,7 +53,6 @@ func NewConfig(config string) error {
 	}
 	vp.WatchConfig()
 	vp.OnConfigChange(func(e fsnotify.Event) {
-		log.Printf("Config file changed: %s", e.Name)
 		if err = vp.Unmarshal(&AppConfig); err != nil {
 			log.Printf("Config file changed filed: %s", err)
 		}

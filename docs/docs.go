@@ -47,6 +47,206 @@ const docTemplate_swagger = `{
                 }
             }
         },
+        "/api/v1/news": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "新闻相关接口"
+                ],
+                "summary": "新增新闻",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "新闻标题",
+                        "name": "title",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "新闻描述",
+                        "name": "desc",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "新闻图",
+                        "name": "thumb",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "新闻关键词",
+                        "name": "seo_keyword",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "新闻tag",
+                        "name": "tags",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "新闻内容",
+                        "name": "content",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "新闻类别",
+                        "name": "cate_id",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "新闻点赞数",
+                        "name": "zan",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "新闻热门",
+                        "name": "hot",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "新闻查看数",
+                        "name": "see_num",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "新闻是否置顶",
+                        "name": "type",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "新闻是否显示",
+                        "name": "show",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\": 200, \"msg\": \"success\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "{\"code\": 101, \"msg\": \"参数错误\"} 请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "{\"code\": 102, \"msg\": \"未找到结果\"} 内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/news/{id}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "新闻相关接口"
+                ],
+                "summary": "通过ID获取新闻详细信息",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "新闻ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/model.News"
+                        }
+                    },
+                    "400": {
+                        "description": "code\": 101, \"msg\": \"参数错误\"} \"请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "code\": 102, \"msg\": \"未找到结果\"} \"内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/upload": {
+            "post": {
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "图片上传接口"
+                ],
+                "summary": "图片上传",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "file",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\": 200, \"msg\": \"success\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "{\"code\": 101, \"msg\": \"参数错误\"} 请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "{\"code\": 102, \"msg\": \"未找到结果\"} 内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/user": {
             "post": {
                 "produces": [
@@ -142,13 +342,58 @@ const docTemplate_swagger = `{
         }
     },
     "definitions": {
+        "model.News": {
+            "type": "object",
+            "properties": {
+                "cate_id": {
+                    "type": "integer"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "desc": {
+                    "type": "string"
+                },
+                "hot": {
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "id",
+                    "type": "integer"
+                },
+                "see_num": {
+                    "type": "integer"
+                },
+                "seo_keyword": {
+                    "type": "string"
+                },
+                "show": {
+                    "type": "integer"
+                },
+                "tags": {
+                    "type": "string"
+                },
+                "thumb": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "description": "更新时间",
+                    "type": "string"
+                },
+                "zan": {
+                    "type": "integer"
+                }
+            }
+        },
         "model.User": {
             "type": "object",
             "properties": {
-                "created_at": {
-                    "description": "创建时间",
-                    "type": "string"
-                },
                 "email": {
                     "description": "邮箱",
                     "type": "string"
@@ -175,6 +420,17 @@ const docTemplate_swagger = `{
                 },
                 "user_name": {
                     "description": "用户名",
+                    "type": "string"
+                }
+            }
+        },
+        "response.Code": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "msg": {
                     "type": "string"
                 }
             }

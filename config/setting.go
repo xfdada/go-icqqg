@@ -41,3 +41,10 @@ type Logger struct {
 	ErrorPath  string
 	ErrorLevel string
 }
+
+type Upload struct {
+	MaxSize int
+	Path    string
+	Url     string
+	Ext     []string
+}

@@ -1,9 +1,39 @@
 definitions:
+  model.News:
+    properties:
+      cate_id:
+        type: integer
+      content:
+        type: string
+      desc:
+        type: string
+      hot:
+        type: integer
+      id:
+        description: id
+        type: integer
+      see_num:
+        type: integer
+      seo_keyword:
+        type: string
+      show:
+        type: integer
+      tags:
+        type: string
+      thumb:
+        type: string
+      title:
+        type: string
+      type:
+        type: integer
+      updated_at:
+        description: 更新时间
+        type: string
+      zan:
+        type: integer
+    type: object
   model.User:
     properties:
-      created_at:
-        description: 创建时间
-        type: string
       email:
         description: 邮箱
         type: string
@@ -24,6 +54,13 @@ definitions:
         type: string
       user_name:
         description: 用户名
+        type: string
+    type: object
+  response.Code:
+    properties:
+      code:
+        type: integer
+      msg:
         type: string
     type: object
 info:
@@ -51,6 +88,141 @@ paths:
           schema:
             type: string
       summary: 获取token
+  /api/v1/news:
+    post:
+      parameters:
+      - description: 新闻标题
+        in: formData
+        name: title
+        required: true
+        type: string
+      - description: 新闻描述
+        in: formData
+        name: desc
+        required: true
+        type: string
+      - description: 新闻图
+        in: formData
+        name: thumb
+        required: true
+        type: string
+      - description: 新闻关键词
+        in: formData
+        name: seo_keyword
+        required: true
+        type: string
+      - description: 新闻tag
+        in: formData
+        name: tags
+        required: true
+        type: string
+      - description: 新闻内容
+        in: formData
+        name: content
+        required: true
+        type: string
+      - description: 新闻类别
+        in: formData
+        name: cate_id
+        required: true
+        type: string
+      - description: 新闻点赞数
+        in: formData
+        name: zan
+        required: true
+        type: integer
+      - description: 新闻热门
+        in: formData
+        name: hot
+        required: true
+        type: integer
+      - description: 新闻查看数
+        in: formData
+        name: see_num
+        required: true
+        type: integer
+      - description: 新闻是否置顶
+        in: formData
+        name: type
+        required: true
+        type: integer
+      - description: 新闻是否显示
+        in: formData
+        name: show
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 200, "msg": "success"}'
+          schema:
+            $ref: '#/definitions/response.Code'
+        "400":
+          description: '{"code": 101, "msg": "参数错误"} 请求错误'
+          schema:
+            $ref: '#/definitions/response.Code'
+        "500":
+          description: '{"code": 102, "msg": "未找到结果"} 内部错误'
+          schema:
+            $ref: '#/definitions/response.Code'
+      summary: 新增新闻
+      tags:
+      - 新闻相关接口
+  /api/v1/news/{id}:
+    get:
+      parameters:
+      - description: 新闻ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/model.News'
+        "400":
+          description: 'code": 101, "msg": "参数错误"} "请求错误'
+          schema:
+            $ref: '#/definitions/response.Code'
+        "500":
+          description: 'code": 102, "msg": "未找到结果"} "内部错误'
+          schema:
+            type: string
+      summary: 通过ID获取新闻详细信息
+      tags:
+      - 新闻相关接口
+  /api/v1/upload:
+    post:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: file
+        in: formData
+        name: file
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 200, "msg": "success"}'
+          schema:
+            $ref: '#/definitions/response.Code'
+        "400":
+          description: '{"code": 101, "msg": "参数错误"} 请求错误'
+          schema:
+            $ref: '#/definitions/response.Code'
+        "500":
+          description: '{"code": 102, "msg": "未找到结果"} 内部错误'
+          schema:
+            $ref: '#/definitions/response.Code'
+      summary: 图片上传
+      tags:
+      - 图片上传接口
   /api/v1/user:
     post:
       parameters:

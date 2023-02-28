@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"gin-icqqg/utils/log"
+	"gin-icqqg/config"
 	"github.com/gin-gonic/gin"
 	"time"
 )
@@ -25,7 +25,7 @@ func Logger() gin.HandlerFunc {
 		// 请求IP
 		clientIP := c.ClientIP()
 
-		log.AppLog(statusCode, latencyTime, clientIP, reqMethod, reqUri)
+		config.AppLog(statusCode, latencyTime, clientIP, reqMethod, reqUri)
 	}
 
 }
