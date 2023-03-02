@@ -34,18 +34,27 @@ definitions:
     type: object
   model.User:
     properties:
+      avatar:
+        description: 头像
+        type: string
       email:
         description: 邮箱
         type: string
+      email_bind:
+        description: 邮箱绑定 1是 2否
+        type: integer
+      email_sing:
+        description: 邮箱注册 1是 2否
+        type: integer
       id:
         description: id
         type: integer
-      mobile:
+      phone:
         description: 手机号
         type: string
-      password:
-        description: 密码
-        type: string
+      sex:
+        description: 性别 1男 2女 3未知
+        type: integer
       token:
         description: token
         type: string
@@ -55,6 +64,9 @@ definitions:
       user_name:
         description: 用户名
         type: string
+      uuid:
+        description: uuid
+        type: integer
     type: object
   response.Code:
     properties:
@@ -195,6 +207,30 @@ paths:
       summary: 通过ID获取新闻详细信息
       tags:
       - 新闻相关接口
+  /api/v1/sendSms:
+    post:
+      parameters:
+      - description: ' 手机号'
+        in: formData
+        name: phone
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            type: string
+        "400":
+          description: 请求错误
+          schema:
+            type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 发送短信
   /api/v1/upload:
     post:
       consumes:
@@ -283,6 +319,47 @@ paths:
         "500":
           description: 内部错误
       summary: 获取用户详细信息
+      tags:
+      - 用户接口
+  /api/v1/user/login:
+    post:
+      parameters:
+      - description: ' 手机号'
+        in: formData
+        name: phone
+        required: true
+        type: string
+      - description: ' 密码'
+        in: formData
+        name: password
+        required: true
+        type: string
+      - description: ' 验证码ID'
+        in: formData
+        name: captcha_id
+        required: true
+        type: string
+      - description: ' 验证码'
+        in: formData
+        name: captcha_value
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/response.Code'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/response.Code'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/response.Code'
+      summary: 用户登录
       tags:
       - 用户接口
 swagger: "2.0"

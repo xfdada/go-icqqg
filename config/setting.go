@@ -30,7 +30,7 @@ type Mysql struct {
 type Redis struct {
 	Host     string
 	Password string
-	DB       uint8
+	DB       int
 }
 
 type Logger struct {
@@ -47,4 +47,24 @@ type Upload struct {
 	Path    string
 	Url     string
 	Ext     []string
+}
+
+type CaptCha struct {
+	UseRedis   bool
+	Height     int
+	Width      int
+	Length     int
+	MaxSkew    float64
+	DotCount   int
+	PreKey     string
+	Expiration time.Duration
+}
+
+// AlySms 阿里云短信配置
+type AlySms struct {
+	AliYunSmsAk string
+	AliYunSmsAs string
+	SingName    string
+	Code        string
+	Expiration  time.Duration
 }

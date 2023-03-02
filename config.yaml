@@ -6,8 +6,8 @@ Mysql:
   Username:     root    #用户名
   Password:     root    #密码
   Host:         127.0.0.1:3306
-  DBName:       ssf        #数据库名称
-  TablePrefix:  ssf_        #数据库表名前缀
+  DBName:       go_admin        #数据库名称
+  TablePrefix:  table_        #数据库表名前缀
   Charset:      utf8    #链接字符格式
   ParseTime:    True
   MaxIdleConns: 10
@@ -36,7 +36,7 @@ Logger:
   ErrorLevel: info
 Upload:
   MaxSize:  5     #MB
-  Path:     D:/GOAPP/src/gin-icqqg/uploads/  #文件上传目录
+  Path:     D:/GOAPP/src/gin-icqqg/public/uploads/  #文件上传目录
   Url:            /uploads
   Ext:     #允许上传文件的后缀名
     - .jpg
@@ -46,3 +46,20 @@ Upload:
     - .xlsx
     - .doc
     - .docx
+
+Captcha:
+  UseRedis:     True   #是否开启redis库保存验证码，默认库验证码最大保存数量10000个
+  PreKey:       captcha_ #验证码id存储前缀
+  Expiration:   120   #验证码存活时间
+  Height:       50    #验证码图片高度
+  Width:        80   #验证码图片宽度
+  Length:       4     #验证码长度
+  MaxSkew:      0.2   #倾斜角度
+  DotCount:     50    #杂点数量
+
+AlySms:
+  AliYunSmsAk: LTAI5tPsRNrnEYL5iLe35NHK  #key
+  AliYunSmsAs: 21duqB7Q7lR879kQatSluzpzIxmbS4   # 密钥
+  SingName: IC全球购      #签名
+  Code:  SMS_233905496         #模板
+  Expiration: 300             #验证码有效时间

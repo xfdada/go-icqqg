@@ -7,15 +7,21 @@ import (
 
 type User struct {
 	*Model
-	UserName string `json:"user_name,omitempty" gorm:"column:username"` //用户名
-	Mobile   string `json:"mobile,omitempty" gorm:"comment:手机号"`        //手机号
-	Password string `json:"password,omitempty"`                         //密码
-	Email    string `json:"email,omitempty"`                            //邮箱
-	Token    string `json:"token,omitempty"`                            //token
+	Uuid      int64  `json:"uuid" gorm:"primary_key;"`                   //uuid
+	EmailSing int    `json:"email_sing" gorm:"column:email_sing"`        //邮箱注册 1是 2否
+	EmailBind int    `json:"email_bind" gorm:"column:email_bind"`        //邮箱绑定 1是 2否
+	Sex       int    `json:"sex"`                                        //性别 1男 2女 3未知
+	UserName  string `json:"user_name,omitempty" gorm:"column:username"` //用户名
+	Phone     string `json:"phone,omitempty" gorm:"comment:手机号"`         //手机号
+	Password  string `json:"-,omitempty"`                                //密码
+	Email     string `json:"email,omitempty"`                            //邮箱
+	Token     string `json:"token,omitempty"`                            //token
+	OpenId    string `json:"-,omitempty"`                                //微信OpenId
+	Avatar    string `json:"avatar,omitempty"`                           //头像
 }
 
 func (u User) TableName() string {
-	return "ssf_user"
+	return "table_user"
 }
 
 func NewUser() *User {
@@ -42,7 +48,7 @@ func (u *User) AddUser(c *gin.Context) {
 	}
 	user := &User{
 		UserName: tmpParams["user_name"],
-		Mobile:   tmpParams["mobile"],
+		Phone:    tmpParams["mobile"],
 		Password: tmpParams["password"],
 		Email:    tmpParams["email"],
 	}
@@ -53,4 +59,12 @@ func (u *User) AddUser(c *gin.Context) {
 		c.JSON(500, gin.H{"msg": "用户新增失败"})
 	}
 	c.Abort()
+}
+
+func (u *User) Login(phone, password string) bool {
+	res := db.Where("phone=? and password=?", phone, password).First(u)
+	if res.RowsAffected < 1 {
+		return false
+	}
+	return true
 }

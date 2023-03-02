@@ -8,13 +8,15 @@ import (
 )
 
 type Config struct {
-	Server *Server
-	Redis  *Redis
-	Mysql  *Mysql
-	Jwt    *Jwt
-	Logger *Logger
-	DB     *gorm.DB
-	Upload *Upload
+	Server  *Server
+	Redis   *Redis
+	Mysql   *Mysql
+	Jwt     *Jwt
+	Logger  *Logger
+	DB      *gorm.DB
+	Upload  *Upload
+	CaptCha *CaptCha
+	AlySms  *AlySms
 }
 
 var AppConfig Config

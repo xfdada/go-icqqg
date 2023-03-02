@@ -22,3 +22,11 @@ func GetToken(c *gin.Context) {
 	}
 	c.JSON(200, gin.H{"msg": "success", "token": token})
 }
+
+func UserToken(phone string) string {
+	token, err := jwts.GenerateToken(phone, "go-admin") //这里可以自定义从数据库中取用户的账号和密码生成
+	if err != nil {
+		return ""
+	}
+	return token
+}

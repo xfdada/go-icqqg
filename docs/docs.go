@@ -204,6 +204,43 @@ const docTemplate_swagger = `{
                 }
             }
         },
+        "/api/v1/sendSms": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "发送短信",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": " 手机号",
+                        "name": "phone",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/upload": {
             "post": {
                 "consumes": [
@@ -295,6 +332,67 @@ const docTemplate_swagger = `{
                     },
                     "500": {
                         "description": "内部错误"
+                    }
+                }
+            }
+        },
+        "/api/v1/user/login": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户接口"
+                ],
+                "summary": "用户登录",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": " 手机号",
+                        "name": "phone",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": " 密码",
+                        "name": "password",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": " 验证码ID",
+                        "name": "captcha_id",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": " 验证码",
+                        "name": "captcha_value",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
                     }
                 }
             }
@@ -394,21 +492,33 @@ const docTemplate_swagger = `{
         "model.User": {
             "type": "object",
             "properties": {
+                "avatar": {
+                    "description": "头像",
+                    "type": "string"
+                },
                 "email": {
                     "description": "邮箱",
                     "type": "string"
+                },
+                "email_bind": {
+                    "description": "邮箱绑定 1是 2否",
+                    "type": "integer"
+                },
+                "email_sing": {
+                    "description": "邮箱注册 1是 2否",
+                    "type": "integer"
                 },
                 "id": {
                     "description": "id",
                     "type": "integer"
                 },
-                "mobile": {
+                "phone": {
                     "description": "手机号",
                     "type": "string"
                 },
-                "password": {
-                    "description": "密码",
-                    "type": "string"
+                "sex": {
+                    "description": "性别 1男 2女 3未知",
+                    "type": "integer"
                 },
                 "token": {
                     "description": "token",
@@ -421,6 +531,10 @@ const docTemplate_swagger = `{
                 "user_name": {
                     "description": "用户名",
                     "type": "string"
+                },
+                "uuid": {
+                    "description": "uuid",
+                    "type": "integer"
                 }
             }
         },
