@@ -22,9 +22,10 @@ Redis:
   DB:           2             #数据库
 
 Jwt:
-  AppKey:  xfdada
-  AppSecret: papapa
-  Expire:    7200
+  AppKey:  xfdada    #AppKey
+  AppSecret: papapa  #AppSecret
+  Expire:    7200  # 过期时间
+  Renew:     600  # 后台token续签时间
   Issuer:    xf
 
 Logger:

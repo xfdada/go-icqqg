@@ -19,15 +19,18 @@ const docTemplate_swagger = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/v1/get_token": {
+        "/api/v1/captcha": {
             "get": {
                 "produces": [
                     "application/json"
                 ],
-                "summary": "获取token",
+                "tags": [
+                    "固定接口"
+                ],
+                "summary": "生成验证码",
                 "responses": {
                     "200": {
-                        "description": "成功",
+                        "description": "{\"id\":\"string\",\"url\":\"sdfasfasd\"}成功",
                         "schema": {
                             "type": "string"
                         }
@@ -202,12 +205,53 @@ const docTemplate_swagger = `{
                         }
                     }
                 }
+            },
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "新闻相关接口"
+                ],
+                "summary": "删除新闻",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "新闻ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\": 200, \"msg\": \"success\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "{\"code\": 101, \"msg\": \"参数错误\"} 请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "{\"code\": 102, \"msg\": \"未找到结果\"} 内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
             }
         },
         "/api/v1/sendSms": {
             "post": {
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "固定接口"
                 ],
                 "summary": "发送短信",
                 "parameters": [
@@ -285,6 +329,75 @@ const docTemplate_swagger = `{
             }
         },
         "/api/v1/user": {
+            "put": {
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户接口"
+                ],
+                "summary": "用户更新信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": " 用户名",
+                        "name": "user_name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": " 性别",
+                        "name": "sex",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": " 手机号",
+                        "name": "phone",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": " 邮箱",
+                        "name": "email",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "用户token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":\"更新成功\"}成功",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            },
             "post": {
                 "produces": [
                     "application/json"
@@ -304,7 +417,7 @@ const docTemplate_swagger = `{
                     {
                         "type": "string",
                         "description": " 手机号",
-                        "name": "mobile",
+                        "name": "phone",
                         "in": "formData",
                         "required": true
                     },
@@ -319,6 +432,20 @@ const docTemplate_swagger = `{
                         "type": "string",
                         "description": " 邮箱",
                         "name": "email",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": " 头像",
+                        "name": "avatar",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": " 性别",
+                        "name": "sex",
                         "in": "formData",
                         "required": true
                     }
@@ -397,6 +524,56 @@ const docTemplate_swagger = `{
                 }
             }
         },
+        "/api/v1/user/update_avatar": {
+            "post": {
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户接口"
+                ],
+                "summary": "用户更换头像",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "file",
+                        "name": "file",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "用户token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"url\":\"\"}成功",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/user/{id}": {
             "get": {
                 "produces": [
@@ -437,22 +614,249 @@ const docTemplate_swagger = `{
                     }
                 }
             }
+        },
+        "/api/web/user": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后端管理员模块"
+                ],
+                "summary": "获取自身信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":model.AdminUser}",
+                        "schema": {
+                            "$ref": "#/definitions/model.AdminUser"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后端管理员模块"
+                ],
+                "summary": "新增管理员",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": " 用户名",
+                        "name": "username",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": " 密码",
+                        "name": "password",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": " 姓名",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"msg\":\"新增成功\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/user/login": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后端用户接口"
+                ],
+                "summary": "用户登录",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": " 用户名",
+                        "name": "username",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": " 密码",
+                        "name": "password",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": " 验证码ID",
+                        "name": "captcha_id",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": " 验证码",
+                        "name": "captcha_value",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/user/logout": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后端用户接口"
+                ],
+                "summary": "用户注销",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": " token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"msg\":\"注销成功\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "model.AdminUser": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "integer"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "remember_token": {
+                    "type": "string"
+                },
+                "user_name": {
+                    "type": "string"
+                }
+            }
+        },
         "model.News": {
             "type": "object",
             "properties": {
                 "cate_id": {
+                    "description": "归属类别",
                     "type": "integer"
                 },
                 "content": {
+                    "description": "新闻内容",
                     "type": "string"
                 },
                 "desc": {
+                    "description": "新闻简介",
                     "type": "string"
                 },
                 "hot": {
+                    "description": "是否热门 1是 2否",
                     "type": "integer"
                 },
                 "id": {
@@ -460,37 +864,51 @@ const docTemplate_swagger = `{
                     "type": "integer"
                 },
                 "see_num": {
+                    "description": "查看数量",
                     "type": "integer"
                 },
                 "seo_keyword": {
+                    "description": "新闻关键词",
                     "type": "string"
                 },
                 "show": {
+                    "description": "是否显示 1是 2 否",
                     "type": "integer"
                 },
                 "tags": {
+                    "description": "新闻tag",
                     "type": "string"
                 },
                 "thumb": {
+                    "description": "新闻图片",
                     "type": "string"
                 },
                 "title": {
+                    "description": "新闻标题",
                     "type": "string"
                 },
                 "type": {
+                    "description": "产品类型",
                     "type": "integer"
                 },
                 "updated_at": {
                     "description": "更新时间",
-                    "type": "string"
+                    "type": "integer"
                 },
                 "zan": {
+                    "description": "点赞数量",
                     "type": "integer"
                 }
             }
         },
         "model.User": {
             "type": "object",
+            "required": [
+                "avatar",
+                "email",
+                "phone",
+                "user_name"
+            ],
             "properties": {
                 "avatar": {
                     "description": "头像",
@@ -526,14 +944,14 @@ const docTemplate_swagger = `{
                 },
                 "updated_at": {
                     "description": "更新时间",
-                    "type": "string"
+                    "type": "integer"
                 },
                 "user_name": {
                     "description": "用户名",
                     "type": "string"
                 },
                 "uuid": {
-                    "description": "uuid",
+                    "description": "uuid  自动生成",
                     "type": "integer"
                 }
             }

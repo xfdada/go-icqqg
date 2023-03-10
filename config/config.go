@@ -1,6 +1,9 @@
 package config
 
 import (
+	"flag"
+	"fmt"
+	"gin-icqqg/utils/snow_id"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 	"gorm.io/gorm"
@@ -20,9 +23,19 @@ type Config struct {
 }
 
 var AppConfig Config
+var Snow *snow_id.Snow
+var (
+	port    string
+	runMode string
+	cfgpath string
+)
 
 func init() {
-	err := initConfig()
+	err := setupFlag()
+	if err != nil {
+		fmt.Println(err)
+	}
+	err = initConfig()
 	if err != nil {
 		panic(err)
 	}
@@ -31,6 +44,7 @@ func init() {
 		panic(err)
 	}
 	AppConfig.DB = DB
+	Snow = snow_id.NewSnow(1)
 }
 
 func initConfig() error {
@@ -59,5 +73,13 @@ func NewConfig(config string) error {
 			log.Printf("Config file changed filed: %s", err)
 		}
 	})
+	return nil
+}
+
+func setupFlag() error {
+	flag.StringVar(&port, "port", "", "启动端口")
+	flag.StringVar(&runMode, "mode", "", "启动模式")
+	flag.StringVar(&cfgpath, "config", "./", "配置文件的路径")
+	flag.Parse()
 	return nil
 }

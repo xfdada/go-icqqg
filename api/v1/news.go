@@ -106,3 +106,19 @@ func (n News) Upload(c *gin.Context) {
 	c.Abort()
 	return
 }
+
+// DeleteNews
+//@Tags 新闻相关接口
+//@Summary 删除新闻
+//@Param id path int true "新闻ID"
+//@Produce json
+//@Success 200   "成功"
+//@Success 200 {object} response.Code "{"code": 200, "msg": "success"}"
+//@Failure 400 {object} response.Code "{"code": 101, "msg": "参数错误"} 请求错误"
+//@Failure 500 {object} response.Code "{"code": 102, "msg": "未找到结果"} 内部错误"
+//@Router /api/v1/news/{id} [delete]
+func (n *News) DeleteNews(c *gin.Context) {
+	news := model.NewNews()
+	news.DeleteNews(c)
+	return
+}

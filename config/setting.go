@@ -10,6 +10,7 @@ type Jwt struct {
 	AppKey    string
 	AppSecret string
 	Expire    time.Duration
+	Renew     int64
 	Issuer    string
 }
 

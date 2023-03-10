@@ -17,6 +17,8 @@ var (
 	DeleteError   = NewCode(107, "删除失败")
 	UpdateError   = NewCode(108, "更新失败")
 	CodeError     = NewCode(109, "验证码错误，请重新输入")
+	CountError    = NewCode(110, "账号或密码有误")
+	Logout        = NewCode(111, "已注销，请重新登录")
 	Success       = NewCode(200, "成功")
 )
 
@@ -60,10 +62,14 @@ func (e *Code) StatusCode() int {
 	case ParamsError.Codes():
 		fallthrough
 	case NotFoundError.Codes():
+		fallthrough
+	case CountError.Codes():
 		return http.StatusBadRequest
 	case TokenError.Codes():
 		fallthrough
 	case TokenTimeout.Codes():
+		fallthrough
+	case Logout.Codes():
 		fallthrough
 	case AddError.Codes():
 		fallthrough

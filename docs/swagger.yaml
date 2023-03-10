@@ -1,35 +1,62 @@
 definitions:
+  model.AdminUser:
+    properties:
+      avatar:
+        type: string
+      created_at:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+      remember_token:
+        type: string
+      user_name:
+        type: string
+    type: object
   model.News:
     properties:
       cate_id:
+        description: 归属类别
         type: integer
       content:
+        description: 新闻内容
         type: string
       desc:
+        description: 新闻简介
         type: string
       hot:
+        description: 是否热门 1是 2否
         type: integer
       id:
         description: id
         type: integer
       see_num:
+        description: 查看数量
         type: integer
       seo_keyword:
+        description: 新闻关键词
         type: string
       show:
+        description: 是否显示 1是 2 否
         type: integer
       tags:
+        description: 新闻tag
         type: string
       thumb:
+        description: 新闻图片
         type: string
       title:
+        description: 新闻标题
         type: string
       type:
+        description: 产品类型
         type: integer
       updated_at:
         description: 更新时间
-        type: string
+        type: integer
       zan:
+        description: 点赞数量
         type: integer
     type: object
   model.User:
@@ -60,13 +87,18 @@ definitions:
         type: string
       updated_at:
         description: 更新时间
-        type: string
+        type: integer
       user_name:
         description: 用户名
         type: string
       uuid:
-        description: uuid
+        description: uuid  自动生成
         type: integer
+    required:
+    - avatar
+    - email
+    - phone
+    - user_name
     type: object
   response.Code:
     properties:
@@ -82,13 +114,13 @@ info:
   title: ICQQG接囗文档
   version: "1.0"
 paths:
-  /api/v1/get_token:
+  /api/v1/captcha:
     get:
       produces:
       - application/json
       responses:
         "200":
-          description: 成功
+          description: '{"id":"string","url":"sdfasfasd"}成功'
           schema:
             type: string
         "400":
@@ -99,7 +131,9 @@ paths:
           description: 内部错误
           schema:
             type: string
-      summary: 获取token
+      summary: 生成验证码
+      tags:
+      - 固定接口
   /api/v1/news:
     post:
       parameters:
@@ -182,6 +216,31 @@ paths:
       tags:
       - 新闻相关接口
   /api/v1/news/{id}:
+    delete:
+      parameters:
+      - description: 新闻ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code": 200, "msg": "success"}'
+          schema:
+            $ref: '#/definitions/response.Code'
+        "400":
+          description: '{"code": 101, "msg": "参数错误"} 请求错误'
+          schema:
+            $ref: '#/definitions/response.Code'
+        "500":
+          description: '{"code": 102, "msg": "未找到结果"} 内部错误'
+          schema:
+            $ref: '#/definitions/response.Code'
+      summary: 删除新闻
+      tags:
+      - 新闻相关接口
     get:
       parameters:
       - description: 新闻ID
@@ -231,6 +290,8 @@ paths:
           schema:
             type: string
       summary: 发送短信
+      tags:
+      - 固定接口
   /api/v1/upload:
     post:
       consumes:
@@ -269,7 +330,7 @@ paths:
         type: string
       - description: ' 手机号'
         in: formData
-        name: mobile
+        name: phone
         required: true
         type: string
       - description: ' 密码'
@@ -282,6 +343,16 @@ paths:
         name: email
         required: true
         type: string
+      - description: ' 头像'
+        in: formData
+        name: avatar
+        required: true
+        type: string
+      - description: ' 性别'
+        in: formData
+        name: sex
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -292,6 +363,53 @@ paths:
         "500":
           description: 内部错误
       summary: 新增用户
+      tags:
+      - 用户接口
+    put:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: ' 用户名'
+        in: formData
+        name: user_name
+        required: true
+        type: string
+      - description: ' 性别'
+        in: formData
+        name: sex
+        required: true
+        type: string
+      - description: ' 手机号'
+        in: formData
+        name: phone
+        required: true
+        type: string
+      - description: ' 邮箱'
+        in: formData
+        name: email
+        required: true
+        type: string
+      - description: 用户token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":"更新成功"}成功'
+          schema:
+            $ref: '#/definitions/response.Code'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/response.Code'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/response.Code'
+      summary: 用户更新信息
       tags:
       - 用户接口
   /api/v1/user/{id}:
@@ -362,4 +480,170 @@ paths:
       summary: 用户登录
       tags:
       - 用户接口
+  /api/v1/user/update_avatar:
+    post:
+      consumes:
+      - multipart/form-data
+      parameters:
+      - description: file
+        in: formData
+        name: file
+        required: true
+        type: file
+      - description: 用户token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"url":""}成功'
+          schema:
+            $ref: '#/definitions/response.Code'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/response.Code'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/response.Code'
+      summary: 用户更换头像
+      tags:
+      - 用户接口
+  /api/web/user:
+    get:
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":model.AdminUser}'
+          schema:
+            $ref: '#/definitions/model.AdminUser'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/response.Code'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/response.Code'
+      summary: 获取自身信息
+      tags:
+      - 后端管理员模块
+    post:
+      parameters:
+      - description: ' 用户名'
+        in: formData
+        name: username
+        required: true
+        type: string
+      - description: ' 密码'
+        in: formData
+        name: password
+        required: true
+        type: string
+      - description: ' 姓名'
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"msg":"新增成功"}'
+          schema:
+            $ref: '#/definitions/response.Code'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/response.Code'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/response.Code'
+      summary: 新增管理员
+      tags:
+      - 后端管理员模块
+  /api/web/user/login:
+    post:
+      parameters:
+      - description: ' 用户名'
+        in: formData
+        name: username
+        required: true
+        type: string
+      - description: ' 密码'
+        in: formData
+        name: password
+        required: true
+        type: string
+      - description: ' 验证码ID'
+        in: formData
+        name: captcha_id
+        required: true
+        type: string
+      - description: ' 验证码'
+        in: formData
+        name: captcha_value
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 成功
+          schema:
+            $ref: '#/definitions/response.Code'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/response.Code'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/response.Code'
+      summary: 用户登录
+      tags:
+      - 后端用户接口
+  /api/web/user/logout:
+    get:
+      parameters:
+      - description: ' token'
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"msg":"注销成功"}'
+          schema:
+            $ref: '#/definitions/response.Code'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/response.Code'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/response.Code'
+      summary: 用户注销
+      tags:
+      - 后端用户接口
 swagger: "2.0"

@@ -5,14 +5,17 @@ import (
 	"fmt"
 	"gin-icqqg/config"
 	"gin-icqqg/config/response"
+	"gin-icqqg/model"
 	"gin-icqqg/utils/alisms"
+	"gin-icqqg/utils/captcha"
 	"gin-icqqg/utils/redis"
 	"github.com/gin-gonic/gin"
 	"math/rand"
 	"time"
 )
 
-// SendSms @Tags 固定接口
+// SendSms
+//@Tags 固定接口
 //@Summary 发送短信
 //@Param phone  formData string true " 手机号"
 //@Produce json
@@ -35,4 +38,27 @@ func SendSms(c *gin.Context) {
 	}
 	c.Abort()
 	return
+}
+
+// Captcha
+//@Tags 固定接口
+//@Summary 生成验证码
+//@Produce json
+//@Success 200   "成功"
+// @Success 200 string json "{"id":"string","url":"sdfasfasd"}成功"
+// @Failure 400 string string "请求错误"
+// @Failure 500 string string "内部错误"
+//@Router /api/v1/captcha [get]
+func Captcha(c *gin.Context) {
+	r := response.NewResponse(c)
+	id, url := captcha.GetCaptcha()
+	r.SuccessResp(map[string]string{"id": id, "url": url})
+}
+
+func GetTable(c *gin.Context) {
+	model.GetTable(c)
+}
+
+func MyTable(c *gin.Context) {
+	model.MyTable(c)
 }
