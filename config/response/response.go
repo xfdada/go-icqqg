@@ -18,6 +18,7 @@ var (
 	UpdateError   = NewCode(108, "更新失败")
 	CodeError     = NewCode(109, "验证码错误，请重新输入")
 	CountError    = NewCode(110, "账号或密码有误")
+	NoCountError  = NewCode(111, "账号不存在")
 	Logout        = NewCode(111, "已注销，请重新登录")
 	Success       = NewCode(200, "成功")
 )
@@ -62,6 +63,8 @@ func (e *Code) StatusCode() int {
 	case ParamsError.Codes():
 		fallthrough
 	case NotFoundError.Codes():
+		fallthrough
+	case NoCountError.Codes():
 		fallthrough
 	case CountError.Codes():
 		return http.StatusBadRequest

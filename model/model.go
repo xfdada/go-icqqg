@@ -35,6 +35,7 @@ type TableInfo struct {
 	ColumnComment string `gorm:"column:column_comment" json:"column_comment"`
 }
 
+//Paginate 分页
 func Paginate(page, pageSize int) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
 		if page == 0 {

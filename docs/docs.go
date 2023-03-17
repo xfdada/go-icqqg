@@ -615,6 +615,1195 @@ const docTemplate_swagger = `{
                 }
             }
         },
+        "/api/web/menu": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后端菜单模块"
+                ],
+                "summary": "添加菜单信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "排序升序",
+                        "name": "sort",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "菜单标题",
+                        "name": "title",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "菜单路由",
+                        "name": "url",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "是否显示 1是 2否",
+                        "name": "show",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "父级ID",
+                        "name": "parent_id",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"msg\":\"success\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/menu/{id}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后端菜单模块"
+                ],
+                "summary": "获取菜单信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":model.Menu}",
+                        "schema": {
+                            "$ref": "#/definitions/model.Menu"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后端菜单模块"
+                ],
+                "summary": "修改菜单信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "排序升序",
+                        "name": "sort",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "菜单标题",
+                        "name": "title",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "菜单路由",
+                        "name": "url",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "是否显示 1是 2否",
+                        "name": "show",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "父级ID",
+                        "name": "parent_id",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"msg\":\"success\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后端菜单模块"
+                ],
+                "summary": "删除菜单信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"msg\":\"success\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/menuList": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后端菜单模块"
+                ],
+                "summary": "菜单列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":[]model.Menu}",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Menu"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/menuTree": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后端菜单模块"
+                ],
+                "summary": "获取菜单层级信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":[]map[string]interface{}}",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": true
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/permission": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后端权限模块"
+                ],
+                "summary": "添加权限信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "权限名",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "权限中文名",
+                        "name": "tag",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "请求路径",
+                        "name": "http_path",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "空为any 任何方法，get,put,post",
+                        "name": "http_method",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "父级ID",
+                        "name": "parent_id",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"msg\":\"success\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/permission/{id}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后端权限模块"
+                ],
+                "summary": "获取权限信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":model.Permission}",
+                        "schema": {
+                            "$ref": "#/definitions/model.Permissions"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后端权限模块"
+                ],
+                "summary": "修改权限信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "权限名",
+                        "name": "name",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "权限中文名",
+                        "name": "tag",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "请求路径",
+                        "name": "http_path",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "空为any 任何方法，get,put,post",
+                        "name": "http_method",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "父级ID",
+                        "name": "parent_id",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"msg\":\"success\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后端权限模块"
+                ],
+                "summary": "删除权限信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"msg\":\"success\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/permissionList": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后端权限模块"
+                ],
+                "summary": "顶级权限列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":[]model.Permission}",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Permissions"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/permissionTree": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后端权限模块"
+                ],
+                "summary": "获取权限层级信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":[]map[string]interface{}}",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "additionalProperties": true
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/product": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后台产品模块"
+                ],
+                "summary": "添加产品信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "名称",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "标题",
+                        "name": "title",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "型号",
+                        "name": "version",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"msg\":\"success\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/product/{id}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后台产品模块"
+                ],
+                "summary": "获取产品信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":model.Product}",
+                        "schema": {
+                            "$ref": "#/definitions/model.Product"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后台产品模块"
+                ],
+                "summary": "删除产品信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"msg\":\"success\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/product/{id}/edit": {
+            "put": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后台产品模块"
+                ],
+                "summary": "修改产品信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "名称",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "标题",
+                        "name": "title",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "型号",
+                        "name": "version",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"msg\":\"success\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/productList": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后台产品模块"
+                ],
+                "summary": "产品列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":[]model.Product}",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Product"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/role": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后端角色模块"
+                ],
+                "summary": "添加角色信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "角色英文名",
+                        "name": "role_name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "角色中文名",
+                        "name": "role_tag",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "菜单ID字符串1，2，3",
+                        "name": "menu_id",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "权限ID字符串 1，2，3",
+                        "name": "permissions_id",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"msg\":\"success\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/role/{id}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后端角色模块"
+                ],
+                "summary": "获取角色信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":model.Role}",
+                        "schema": {
+                            "$ref": "#/definitions/model.Role"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后端菜单模块"
+                ],
+                "summary": "修改菜单信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "角色英文名",
+                        "name": "role_name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "角色中文名",
+                        "name": "role_tag",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "菜单ID字符串1，2，3",
+                        "name": "menu_id",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "权限ID字符串 1，2，3",
+                        "name": "permissions_id",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"msg\":\"success\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后端角色模块"
+                ],
+                "summary": "删除角色信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"msg\":\"success\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/roleList": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后端角色模块"
+                ],
+                "summary": "角色列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":[]model.Menu}",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Role"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
         "/api/web/user": {
             "get": {
                 "produces": [
@@ -814,6 +2003,170 @@ const docTemplate_swagger = `{
                     }
                 }
             }
+        },
+        "/api/web/user/{username}": {
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后端管理员模块"
+                ],
+                "summary": "删除管理员",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "账号名",
+                        "name": "username",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":[]model.AdminUser}",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.AdminUser"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/userIsOpen": {
+            "put": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后端管理员模块"
+                ],
+                "summary": "管理员是否启用",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "账号名",
+                        "name": "username",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "是否启用",
+                        "name": "is_open",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":[]model.AdminUser}",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.AdminUser"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/userList": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后端管理员模块"
+                ],
+                "summary": "获取管理员列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "页码",
+                        "name": "page",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "每页数量",
+                        "name": "pageSize",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":[]model.AdminUser}",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.AdminUser"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -821,21 +2174,64 @@ const docTemplate_swagger = `{
             "type": "object",
             "properties": {
                 "avatar": {
+                    "description": "头像",
                     "type": "string"
                 },
                 "created_at": {
                     "type": "integer"
                 },
                 "id": {
+                    "description": "ID",
+                    "type": "integer"
+                },
+                "is_open": {
+                    "description": "是否启用 1是 2否",
                     "type": "integer"
                 },
                 "name": {
+                    "description": "名称",
                     "type": "string"
                 },
                 "remember_token": {
+                    "description": "免登录token",
                     "type": "string"
                 },
                 "user_name": {
+                    "description": "用户名",
+                    "type": "string"
+                }
+            }
+        },
+        "model.Menu": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "parent_id": {
+                    "description": "父级ID",
+                    "type": "integer"
+                },
+                "show": {
+                    "description": "是否展示 1是 2否",
+                    "type": "integer"
+                },
+                "sort": {
+                    "description": "菜单排序",
+                    "type": "integer"
+                },
+                "title": {
+                    "description": "菜单名称",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "url": {
+                    "description": "路由地址",
                     "type": "string"
                 }
             }
@@ -898,6 +2294,95 @@ const docTemplate_swagger = `{
                 "zan": {
                     "description": "点赞数量",
                     "type": "integer"
+                }
+            }
+        },
+        "model.Permissions": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "http_method": {
+                    "description": "请求方法  空为任何方法 ，GET，POST，PUT，DELETE，PATCH，OPTIONS",
+                    "type": "string"
+                },
+                "http_path": {
+                    "description": "请求路径",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "description": "权限英文名",
+                    "type": "string"
+                },
+                "parent_id": {
+                    "description": "父级ID",
+                    "type": "integer"
+                },
+                "tag": {
+                    "description": "权限名称",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Product": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.Role": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "description": "创建时间",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "menu_id": {
+                    "description": "菜单ID    用逗号分隔例如 1，2，3，4",
+                    "type": "string"
+                },
+                "permissions_id": {
+                    "description": "权限ID    用逗号分隔例如 1，2，3，4",
+                    "type": "string"
+                },
+                "role_name": {
+                    "description": "角色名称",
+                    "type": "string"
+                },
+                "role_tag": {
+                    "description": "角色标签",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "description": "更新时间",
+                    "type": "string"
                 }
             }
         },

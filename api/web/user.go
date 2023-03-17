@@ -5,6 +5,7 @@ import (
 	"gin-icqqg/config"
 	"gin-icqqg/model"
 	"github.com/gin-gonic/gin"
+	"strconv"
 )
 
 type WebUser struct{}
@@ -63,5 +64,70 @@ func (web *WebUser) AddUser(c *gin.Context) {
 func (web *WebUser) SelfInfo(c *gin.Context) {
 	tag := model.NewAdminUser()
 	tag.GetSelfInfo(Logins.UserName, c)
+	return
+}
+
+// UserList  获取用户列表
+//@Tags 后端管理员模块
+//@Summary 获取管理员列表
+//@Param token header string true "token"
+//@Param page query int true "页码"
+//@Param pageSize query int true "每页数量"
+//@Produce json
+// @Success 200 {object} []model.AdminUser "{"code":200,"data":[]model.AdminUser}"
+// @Failure 400 {object} response.Code "请求错误"
+// @Failure 500 {object} response.Code "内部错误"
+//@Router /api/web/userList [get]
+func (web *WebUser) UserList(c *gin.Context) {
+	page := c.Query("page")
+	pageSize := c.Query("pageSize")
+	tag := model.NewAdminUser()
+	pageInt, _ := strconv.ParseInt(page, 10, 64)
+	pageSizeInt, _ := strconv.ParseInt(pageSize, 10, 64)
+	tag.GetUserList(int(pageInt), int(pageSizeInt), c)
+	c.Abort()
+	return
+}
+
+// IsOpen  管理员是否启用
+//@Tags 后端管理员模块
+//@Summary 管理员是否启用
+//@Param token header string true "token"
+//@Param username formData string true "账号名"
+//@Param is_open formData bool true "是否启用"
+//@Produce json
+// @Success 200 {object} []model.AdminUser "{"code":200,"data":[]model.AdminUser}"
+// @Failure 400 {object} response.Code "请求错误"
+// @Failure 500 {object} response.Code "内部错误"
+//@Router /api/web/userIsOpen [put]
+func (web *WebUser) IsOpen(c *gin.Context) {
+	isOpen := c.PostForm("is_open")
+	username := c.PostForm("username")
+	tag := model.NewAdminUser()
+	open := 1
+	if isOpen == "false" {
+		open = 0
+	}
+	tag.UserIsOpen(username, open, c)
+	c.Abort()
+	return
+}
+
+//DelUser  删除管理员
+//@Tags 后端管理员模块
+//@Summary 删除管理员
+//@Param token header string true "token"
+//@Param username path string true "账号名"
+//@Produce json
+// @Success 200 {object} []model.AdminUser "{"code":200,"data":[]model.AdminUser}"
+// @Failure 400 {object} response.Code "请求错误"
+// @Failure 500 {object} response.Code "内部错误"
+//@Router /api/web/user/{username} [delete]
+func (web *WebUser) DelUser(c *gin.Context) {
+	username := c.Param("username")
+	fmt.Println(username, "----------------")
+	tag := model.NewAdminUser()
+	tag.DelUser(username, c)
+	c.Abort()
 	return
 }
