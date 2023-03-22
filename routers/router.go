@@ -22,6 +22,7 @@ func NewRouter() *gin.Engine {
 	r.Static("/asset", "public")            //静态资源
 	r.StaticFS("/uploads", http.Dir(config.AppConfig.Upload.Path))
 	r.GET("/api/v1/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+	r.Delims("{[", "]}")
 	user := v1.User{}
 	news := v1.News{}
 	r.GET("/api/v1/captcha", v1.Captcha)
@@ -30,9 +31,7 @@ func NewRouter() *gin.Engine {
 	r.POST("/api/v1/user/login", user.Login)
 	r.POST("/api/v1/sendSms", v1.SendSms)
 	r.GET("/index.html", index.Index)
-	r.GET("/admin/", admin.Index)
 	r.GET("/admin/helper", admin.Helpers)
-	r.GET("/admin/home/index", admin.HomeIndex)
 	r.POST("/api/v1/user", user.AddUser)
 	r.GET("/api/v1/news/:id", news.GetNewsById)
 	r.DELETE("/api/v1/news/:id", news.DeleteNews)
