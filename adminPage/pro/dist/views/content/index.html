@@ -1,0 +1,239 @@
+<title>菜单管理</title>
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">主页</a>
+    <a><cite>菜单管理</cite></a>
+  </div>
+</div>
+<style>
+.dd-handle {
+    display: block;
+    margin: 1px 0;
+    padding: 8px 10px;
+    color: #333;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    background: #fff;
+    border: 1px solid #eaeff0!important;
+    border-radius: 0.2rem!important;
+}
+.menus{
+  background: #FFF;
+  border-radius: 10px;
+  margin-right:15px;
+  padding: 10px;
+  min-height: 80vh;
+}
+.menus ol li a {
+  padding-left: 10px;
+    color: #4c60a3;
+    background-color: transparent;
+}
+.dd-list{
+  padding-left: 30px;
+}
+.addMenu{
+  background: #FFF;
+  border-radius: 10px;
+  margin-left:15px;
+  padding: 10px;
+  height: 80vh;
+}
+.add-title{
+  border-bottom: 1px solid #f4f4f4;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+.addMenu .layui-form-label{
+  width: 30px;
+}
+.addMenu .layui-input-block{
+  margin-left: 70px;
+}
+.add-news-form{
+  padding-right: 20px;
+}
+</style>
+
+<script id="demo" type="text/html">
+  {{#  layui.each(d.data, function(index, item){ }}
+    {{#  if(item.sub){ }}
+      <li><div class="dd-handle"><strong>{{ item.title || '' }}</strong></div>
+        <ol class="dd-list">
+          {{#  layui.each(item.sub, function(index, itemSub){ }}
+          <li><div class="dd-handle"><strong>{{ itemSub.title}}</strong><a href="{{ itemSub.url}}" class="dd-nodrag">{{ itemSub.url}}</a></div></li>
+          {{#  }); }}
+        </ol>
+      </li>
+    {{#  } else{ }}
+    <li><div class="dd-handle"><strong>{{ item.title || '' }}</strong><a href="{{ item.url || '' }}" class="dd-nodrag">{{ item.url || '' }}</a></div></li>
+    {{#  } }} 
+  {{#  }); }}
+
+</script>
+<div class="layui-fluid">
+
+  <div class="layui-row">
+    <div class="layui-col-md8">
+      <div class="menus ">
+        <ol id="menuList">
+          
+        </ol>
+      </div>
+       
+    </div>
+    <div class="layui-col-md4">
+      <div class="addMenu">
+        <div class="add-title"><strong>新增菜单</strong></div>
+        <form action="" class="layui-form add-news-form" s lay-filter="Tmptest">
+          <div class="layui-form-item">
+            <label class="layui-form-label">标题</label>
+            <div class="layui-input-block">
+              <input type="text" name="title" required  lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">地址</label>
+            <div class="layui-input-block">
+              <input type="text" name="title" required  lay-verify="required" placeholder="请输入路由地址" autocomplete="off" class="layui-input">
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">父级</label>
+            <div class="layui-input-block">
+              <select name="city" lay-verify="required" id="parent_id">
+                <option value="0">顶级</option>
+                
+              </select>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">角色</label>
+            <div class="layui-input-block">
+              <input type="checkbox" name="" title="写作" lay-skin="primary" checked>
+              <input type="checkbox" name="" title="发呆" lay-skin="primary"> 
+              <input type="checkbox" name="" title="禁用" lay-skin="primary" disabled>
+              <input type="checkbox" name="" title="写作" lay-skin="primary" checked>
+              <input type="checkbox" name="" title="发呆" lay-skin="primary"> 
+              <input type="checkbox" name="" title="禁用" lay-skin="primary" disabled>
+              <input type="checkbox" name="" title="写作" lay-skin="primary" checked>
+              <input type="checkbox" name="" title="发呆" lay-skin="primary"> 
+              <input type="checkbox" name="" title="禁用" lay-skin="primary" disabled>
+              <input type="checkbox" name="" title="写作" lay-skin="primary" checked>
+              <input type="checkbox" name="" title="发呆" lay-skin="primary"> 
+              <input type="checkbox" name="" title="禁用" lay-skin="primary" disabled>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label">角色</label>
+            <div class="layui-input-block" >
+              <input type="checkbox" name="" title="写作" lay-skin="primary" checked>
+              <input type="checkbox" name="" title="发呆" lay-skin="primary"> 
+              <input type="checkbox" name="" title="禁用" lay-skin="primary" disabled>
+              <input type="checkbox" name="" title="写作" lay-skin="primary" checked>
+              <input type="checkbox" name="" title="发呆" lay-skin="primary"> 
+              <input type="checkbox" name="" title="禁用" lay-skin="primary" disabled>
+              <input type="checkbox" name="" title="写作" lay-skin="primary" checked>
+              <input type="checkbox" name="" title="发呆" lay-skin="primary"> 
+              <input type="checkbox" name="" title="禁用" lay-skin="primary" disabled>
+              <input type="checkbox" name="" title="写作" lay-skin="primary" checked>
+              <input type="checkbox" name="" title="发呆" lay-skin="primary"> 
+              <input type="checkbox" name="" title="禁用" lay-skin="primary" disabled>
+              <input type="checkbox" name="" title="写作" lay-skin="primary" checked>
+              <input type="checkbox" name="" title="发呆" lay-skin="primary"> 
+              <input type="checkbox" name="" title="禁用" lay-skin="primary" disabled>
+            </div>
+          </div>
+          <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-block text-center">
+              <button type="button" lay-submit lay-filter="go" class="layui-btn layui-text-center  layui-btn-normal">提交</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+<script>
+
+
+  layui.use(['form'],function(){
+    var form = layui.form,$ = layui.$
+   $.ajax({
+     type:"GET",
+     url: layui.setter.api+"getTree",
+     headers:{token:layui.data('layuiAdmin').token},
+     success:function(res){
+       if (res.code==200){
+         var html = ""
+          if (res.data.length!==0){
+            res.data.forEach(function(element){
+              html += '<option value="'+element.data.id+'">'+element.data.tag+'</option>'
+              console.log(element.sub)
+              if(element.sub){
+                
+                element.sub.forEach(function(element){
+                  html += '<option value="'+element.data.id+'">----'+element.data.tag+'</option>'
+                })
+              }
+            })
+            $("#parent_id").append(html)
+            form.render()
+          }
+       }
+     }
+   })
+   $.ajax({
+    type:"GET",
+    url: layui.setter.api+"getTree",
+    headers:{token:layui.data('layuiAdmin').token},
+    success:function(res){
+      if (res.code==200){
+        var html = ""
+         if (res.data.length!==0){
+           res.data.forEach(function(element){
+             html += '<option value="'+element.data.id+'">'+element.data.tag+'</option>'
+             console.log(element.sub)
+             if(element.sub){
+               
+               element.sub.forEach(function(element){
+                 html += '<option value="'+element.data.id+'">----'+element.data.tag+'</option>'
+               })
+             }
+           })
+           $("#parent_id").append(html)
+           form.render()
+         }
+      }
+    }
+  })
+
+    
+  })
+
+
+  $(function(){
+    render()
+  })
+
+  function render(){
+    layui.use(['laytpl'],function(){
+      var laytpl = layui.laytpl
+      var getTpl = demo.innerHTML,view = document.getElementById('menuList');
+      $.ajax({
+        type: "GET",
+        url: layui.setter.api + "menuTree" ,
+        headers:{token:layui.data('layuiAdmin').token},
+        success: function (res) {
+          laytpl(getTpl).render(res, function(html){
+            view.innerHTML = html;
+          });
+        }
+      })
+    })
+  }
+</script>

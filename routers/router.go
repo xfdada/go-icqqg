@@ -7,8 +7,11 @@ import (
 	"gin-icqqg/controller/admin"
 	"gin-icqqg/controller/index"
 	_ "gin-icqqg/docs"
+	im2 "gin-icqqg/im"
 	"gin-icqqg/middleware"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/websocket"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"net/http"
@@ -16,15 +19,27 @@ import (
 
 func NewRouter() *gin.Engine {
 	r := gin.New()
-	r.Use(gin.Logger())
+	configs := cors.DefaultConfig()
+	configs.AllowOrigins = []string{"*"}
+	configs.AllowHeaders = []string{"token"}
+	upGrader := websocket.Upgrader{
+		ReadBufferSize:  1024,
+		WriteBufferSize: 1024,
+	}
+	upGrader.CheckOrigin = func(r *http.Request) bool {
+		return true
+	}
+	r.Use(gin.Logger(), cors.New(configs))
 	r.Use(gin.Recovery())
-	r.LoadHTMLGlob("resource/view/**/**/*") //加载模板文件
-	r.Static("/asset", "public")            //静态资源
+	r.LoadHTMLGlob("resource/view/**/*") //加载模板文件
+	r.Static("/asset", "public")         //静态资源
 	r.StaticFS("/uploads", http.Dir(config.AppConfig.Upload.Path))
 	r.GET("/api/v1/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	r.Delims("{[", "]}")
 	user := v1.User{}
 	news := v1.News{}
+	im := im2.NewIm(upGrader)
+	r.GET("/ws", im.Toke)
 	r.GET("/api/v1/captcha", v1.Captcha)
 	r.GET("/api/v1/table", v1.GetTable)
 	r.GET("/api/v1/table_info", v1.MyTable)
@@ -33,9 +48,7 @@ func NewRouter() *gin.Engine {
 	r.GET("/index.html", index.Index)
 	r.GET("/admin/helper", admin.Helpers)
 	r.POST("/api/v1/user", user.AddUser)
-	r.GET("/api/v1/news/:id", news.GetNewsById)
-	r.DELETE("/api/v1/news/:id", news.DeleteNews)
-	r.POST("/api/v1/news", news.AddNews)
+	r.OPTIONS("/api/v1/upload", news.Uploads)
 	r.POST("/api/v1/upload", news.Upload)
 	apiv1 := r.Group("api/v1")
 	indexUser := &index.User{}
@@ -49,9 +62,12 @@ func NewRouter() *gin.Engine {
 	webUser := web.NewWebUser()
 	webMenu := web.NewAddMenu()
 	webPermission := web.NewPermission()
-	//webProduct := web.NewProduct()
+	webProduct := web.NewProduct()
 	webRole := web.NewRole()
+	webNews := web.NewNews()
+	r.Resource("/api/web/news", webNews)
 	r.GET("/api/web/getTree", webPermission.GetTree)
+	r.GET("/api/web/menuTree", webMenu.GetTree)
 	adminLogin := web.NewAdminLogin()
 	r.POST("/api/web/user/login", adminLogin.Login)
 	admin := r.Group("api/web")
@@ -63,12 +79,7 @@ func NewRouter() *gin.Engine {
 		admin.GET("/userList", webUser.UserList)
 		admin.PUT("/userIsOpen", webUser.IsOpen)
 		admin.GET("/user/logout", adminLogin.LogOut)
-		admin.GET("/menuList", webMenu.List)
-		admin.POST("/menu", webMenu.AddMenu)
-		admin.DELETE("/menu/:id", webMenu.DeleteMenu)
-		admin.PUT("/menu/:id", webMenu.EditMenu)
-		admin.GET("/menu/:id", webMenu.GetMenu)
-		admin.GET("/menuTree", webMenu.GetTree)
+
 		admin.GET("/permissionList", webPermission.List)
 		admin.POST("/permission", webPermission.AddPermission)
 		admin.DELETE("/permission/:id", webPermission.DeletePermission)
@@ -77,7 +88,9 @@ func NewRouter() *gin.Engine {
 		admin.GET("/permissionParent", webPermission.ParentList)
 		admin.GET("/permissionTree", webPermission.GetTree)
 		admin.Resource("/role", webRole)
-		//admin.Resource("/product", webProduct)
+		admin.Resource("/menu", webMenu)
+		admin.Resource("/product", webProduct)
+
 	}
 
 	return r

@@ -1,0 +1,10 @@
+{
+    "data": [
+      {"value": "1", "label": "北京"},
+      {"value": "2", "label": "上海"},
+      {"value": "3", "label": "广州"},
+      {"value": "4", "label": "深圳"},
+      {"value": "5", "label": "杭州"}
+    ]
+  }
+  

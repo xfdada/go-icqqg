@@ -47,6 +47,8 @@ Upload:
     - .xlsx
     - .doc
     - .docx
+    - .mp4
+    - .gif
 
 Captcha:
   UseRedis:     True   #是否开启redis库保存验证码，默认库验证码最大保存数量10000个

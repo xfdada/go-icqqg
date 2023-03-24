@@ -41,7 +41,7 @@ func (a *AddMenu) List(c *gin.Context) {
 	return
 }
 
-//GetMenu 通过ID获取菜单信息
+//Get 通过ID获取菜单信息
 //@Tags 后端菜单模块
 //@Summary 获取菜单信息
 //@Param token header string true "token"
@@ -51,7 +51,7 @@ func (a *AddMenu) List(c *gin.Context) {
 // @Failure 400 {object} response.Code "请求错误"
 // @Failure 500 {object} response.Code "内部错误"
 //@Router /api/web/menu/{id} [get]
-func (a *AddMenu) GetMenu(c *gin.Context) {
+func (a *AddMenu) Get(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
 		c.JSON(400, gin.H{"code": 400, "msg": "参数有误"})
@@ -62,7 +62,7 @@ func (a *AddMenu) GetMenu(c *gin.Context) {
 	return
 }
 
-//AddMenu 新增菜单信息
+//Add 新增菜单信息
 //@Tags 后端菜单模块
 //@Summary 添加菜单信息
 //@Param token header string true "token"
@@ -76,7 +76,7 @@ func (a *AddMenu) GetMenu(c *gin.Context) {
 // @Failure 400 {object} response.Code "请求错误"
 // @Failure 500 {object} response.Code "内部错误"
 //@Router /api/web/menu [post]
-func (a *AddMenu) AddMenu(c *gin.Context) {
+func (a *AddMenu) Add(c *gin.Context) {
 	params := map[string]interface{}{}
 	err := c.ShouldBind(&a)
 	if err != nil {
@@ -93,7 +93,7 @@ func (a *AddMenu) AddMenu(c *gin.Context) {
 	return
 }
 
-//EditMenu 修改菜单信息
+//Edit 修改菜单信息
 //@Tags 后端菜单模块
 //@Summary 修改菜单信息
 //@Param token header string true "token"
@@ -108,7 +108,7 @@ func (a *AddMenu) AddMenu(c *gin.Context) {
 // @Failure 400 {object} response.Code "请求错误"
 // @Failure 500 {object} response.Code "内部错误"
 //@Router /api/web/menu/{id} [put]
-func (a *AddMenu) EditMenu(c *gin.Context) {
+func (a *AddMenu) Edit(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
 		c.JSON(400, gin.H{"code": 400, "msg": "参数有误"})
@@ -132,7 +132,7 @@ func (a *AddMenu) EditMenu(c *gin.Context) {
 	return
 }
 
-//DeleteMenu 删除菜单信息
+//Delete 删除菜单信息
 //@Tags 后端菜单模块
 //@Summary 删除菜单信息
 //@Param token header string true "token"
@@ -142,7 +142,7 @@ func (a *AddMenu) EditMenu(c *gin.Context) {
 // @Failure 400 {object} response.Code "请求错误"
 // @Failure 500 {object} response.Code "内部错误"
 //@Router /api/web/menu/{id} [delete]
-func (a *AddMenu) DeleteMenu(c *gin.Context) {
+func (a *AddMenu) Delete(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
 		c.JSON(400, gin.H{"code": 400, "msg": "参数有误"})

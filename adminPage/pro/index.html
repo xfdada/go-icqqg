@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layuiAdmin pro - 通用后台管理模板系统（单页面专业版）</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="./layui/rc/css/layui.css?t=1.4.0" media="all">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="http://libs.baidu.com/jqueryui/1.8.22/jquery-ui.min.js"></script>
+</head>
+<body>
+<div id="LAY_app"></div>
+<script src="./layui/rc/layui.js?t=1.4.0"></script>
+<script>
+    layui.config({
+        base: './dist/' //指定 layuiAdmin 项目路径
+        ,version: new Date().getTime()
+    }).use('index', function(){
+        var layer = layui.layer, admin = layui.admin;
+
+    });
+</script>
+</body>
+</html>
+
+

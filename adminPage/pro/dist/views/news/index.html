@@ -1,0 +1,540 @@
+<title>新闻管理</title>
+<div class="layui-card layadmin-header">
+  <div class="layui-breadcrumb" lay-filter="breadcrumb">
+    <a lay-href="">主页</a>
+    <a><cite>新闻管理</cite></a>
+  </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/dist/style/css/froala_editor.css">
+<link rel="stylesheet" href="/dist/style/css/froala_style.css">
+<link rel="stylesheet" href="/dist/style/css/plugins/code_view.css">
+<link rel="stylesheet" href="/dist/style/css/plugins/draggable.css">
+<link rel="stylesheet" href="/dist/style/css/plugins/colors.css">
+<link rel="stylesheet" href="/dist/style/css/plugins/emoticons.css">
+<link rel="stylesheet" href="/dist/style/css/plugins/image_manager.css">
+<link rel="stylesheet" href="/dist/style/css/plugins/image.css">
+<link rel="stylesheet" href="/dist/style/css/plugins/line_breaker.css">
+<link rel="stylesheet" href="/dist/style/css/plugins/table.css">
+<link rel="stylesheet" href="/dist/style/css/plugins/char_counter.css">
+<link rel="stylesheet" href="/dist/style/css/plugins/video.css">
+<link rel="stylesheet" href="/dist/style/css/plugins/fullscreen.css">
+<link rel="stylesheet" href="/dist/style/css/plugins/file.css">
+<link rel="stylesheet" href="/dist/style/css/plugins/quick_insert.css">
+<link rel="stylesheet" href="/dist/style/css/plugins/help.css">
+<link rel="stylesheet" href="/dist/style/css/third_party/spell_checker.css">
+<link rel="stylesheet" href="/dist/style/css/plugins/special_characters.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.css">
+
+<style>
+  /* 这段样式只是用于演示 */
+  .layui-inlines {
+    width: 50%;
+  }
+
+  .show-icon {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    left: 5px;
+    font-size: 20px;
+    color: #878787;
+    cursor: pointer;
+  }
+
+  .layui-input {
+    padding-left: 30px;
+  }
+
+  .up-btn {
+    position: absolute;
+    right: 0;
+    transform: translate(0%, -100%);
+  }
+
+  .img-lo {
+    width: 44%;
+  }
+
+  .fr-popup {
+    z-index: 9999666 !important;
+  }
+
+</style>
+<script type="text/html" id="toolbarDemo">
+  <div class="layui-btn-container">
+    <button class="layui-btn layui-btn-sm" onclick="addNews()">新增新闻</button>
+    <button class="layui-btn layui-btn-sm" lay-event="getCheckData">删除选中数据</button>
+  </div>
+</script>
+<script type="text/html" id="barDemo">
+  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script type="text/html" id="show-imgs">
+  <div><img style="cursor: pointer;"  lay-event="showImg" src="{{d.thumb}}" alt=""></div>
+</script>
+
+<script type="text/html" id="switchTpl">
+  <input type="checkbox" name="show" value="{{d.id}}" lay-skin="switch" lay-text="显示|不显示" lay-filter="show" {{ d.show == 1 ?'checked' : '' }}>
+</script>
+<script type="text/html" id="switchTpl2">
+  <input type="checkbox" name="hot" value="{{d.id}}" lay-skin="switch" lay-text="热门|不热门" lay-filter="hot" {{ d.hot == 1 ?'checked' : '' }}>
+</script>
+<div class="layui-fluid">
+  <table class="layui-hide" id="test" lay-filter="test"></table>
+</div>
+
+<div id="addNews" style="padding: 20px 5%;display: none;">
+  <form class="layui-form" lay-filter="Tmptest" action="">
+    <input type="text" hidden name="id">
+    <div class="layui-form-item">
+      <label class="layui-form-label">新闻标题</label>
+      <div class="layui-input-block">
+        <input type="text" name="title" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">新闻简介</label>
+      <div class="layui-input-block">
+        <input type="text" name="description" placeholder="请输入" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">新闻关键词</label>
+      <div class="layui-input-block">
+        <input type="text" name="seo_keyword" placeholder="请输入" autocomplete="off" class="layui-input">
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <div class="layui-inline">
+        <label class="layui-form-label">是否显示</label>
+        <div class="layui-input-inline">
+          <input type="checkbox" checked="true" name="show" lay-skin="switch" lay-filter="switchTest1" title="是否显示"
+            lay-text="是|否">
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label class="layui-form-label">是否热门</label>
+        <div class="layui-input-inline">
+          <input type="checkbox" checked="" name="hot" lay-skin="switch" lay-filter="switchTest2" title="是否热门"
+            lay-text="是|否">
+        </div>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <div class="layui-inline">
+        <label class="layui-form-label">查看数</label>
+        <div class="layui-input-inline">
+          <input type="tel" name="see_num" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label class="layui-form-label">点赞数</label>
+        <div class="layui-input-inline">
+          <input type="tel" name="zan" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">缩略图</label>
+      <div class="layui-inline layui-inlines">
+        <input type="text" name="thumb" disabled value="" id="logo" placeholder="" class="layui-input img-lo">
+        <i class="layui-icon show-icon" id="my-img" data-tag="web_logo">&#xe64a;</i>
+        <button type="button" class="layui-btn up-btn" id="test2"><i class="layui-icon"></i>上传缩略图</button>
+        <div class="img-show"><img src="" id="imgs" alt=""></div>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <div class="layui-inline">
+        <label class="layui-form-label">归属类别</label>
+        <div class="layui-input-inline">
+          <select name="cate_id" lay-verify="required" lay-search="">
+            <option value="0">直接选择或搜索选择</option>
+            <script type="text/html" id="cate_id">
+              {{# layui.each(d, function(index, item){ }}
+                <option value="{{ item.value }}">{{ item.label }}</option>
+              {{# }); }}
+            </script>
+
+          </select>
+        </div>
+      </div>
+      <div class="layui-inline">
+        <label class="layui-form-label">关联产品</label>
+        <div class="layui-input-inline">
+          <select name="type" lay-verify="required" lay-search="">
+            <option value="0">直接选择或搜索选择</option>
+            <script type="text/html" id="product_id">
+              {{# layui.each(d, function(index, item){ }}
+                <option value="{{ item.value }}">{{ item.label }}</option>
+              {{# }); }}
+
+            </script>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="layui-form-item">
+      <label class="layui-form-label">新闻内容</label>
+      <div class="layui-input-block">
+        <div id='edit'></div>
+      </div>
+    </div>
+
+    <div class="layui-form-item">
+      <label class="layui-form-label"></label>
+      <div class="layui-input-block">
+        <button type="button" lay-submit lay-filter="go" class="layui-btn layui-btn-normal">提交</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/codemirror.min.js"></script>
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.3.0/mode/xml/xml.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.2.7/purify.min.js"></script>
+
+<script type="text/javascript" src="/dist/lib/js/froala_editor.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/align.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/char_counter.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/code_beautifier.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/code_view.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/colors.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/draggable.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/emoticons.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/entities.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/file.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/font_size.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/font_family.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/fullscreen.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/image.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/image_manager.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/line_breaker.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/inline_style.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/link.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/lists.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/paragraph_format.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/paragraph_style.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/quick_insert.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/quote.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/table.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/save.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/url.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/video.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/help.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/print.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/third_party/spell_checker.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/special_characters.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/plugins/word_paste.min.js"></script>
+<script type="text/javascript" src="/dist/lib/js/languages/zh_cn.js"></script>
+
+<script>
+
+
+  (function () {
+    new FroalaEditor("#edit", {
+      language: 'zh_cn',
+      imageUploadURL: "http://127.0.0.1:8080/api/v1/upload",
+      videoUploadURL: "http://127.0.0.1:8080/api/v1/upload",
+      toolbarButtons: ['fullscreen', 'bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', 'textColor', 'backgroundColor', 'emoticons', 'inlineStyle', 'paragraphStyle', '|', 'paragraphFormat', 'align', 'formatOL', 'formatUL', 'outdent', 'indent', '-', 'insertLink', 'insertImage', 'insertVideo', 'insertTable', '|', 'quote', 'insertHR', 'undo', 'redo', 'clearFormatting', 'selectAll', 'html'],
+    })
+  })()
+
+
+
+  layui.use(['admin', 'table', 'form', 'laytpl', 'upload'], function () {
+    var $ = layui.$
+      , admin = layui.admin
+      , element = layui.element
+      , router = layui.router();
+    var table = layui.table, form = layui.form, laytpl = layui.laytpl, upload = layui.upload;
+
+    var tableIns = table.render({
+      elem: '#test'
+      , url: layui.setter.api + 'newsList'
+      ,headers:{token:layui.data('layuiAdmin').token}
+      , height: 'full-200'
+      , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
+      , defaultToolbar: ['filter', 'exports', 'print']
+      , title: '新闻数据表'
+      , cols: [[
+        { type: 'checkbox', fixed: 'left' }
+        , { field: 'id', title: 'id',hide:true }
+        , { field: 'title', title: '新闻标题' }
+        , { field: 'desc', title: '新闻简介' }
+        , { field: 'thumb', title: '图片', templet: '#show-imgs' }
+        , { field: 'show', title: '是否显示', templet: '#switchTpl' }
+        , { field: 'hot', title: '是否热门', templet: '#switchTpl2' }
+        , { field: 'created_at', title: '创建时间' }
+        , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150 }
+      ]]
+      , page: true
+    });
+
+    //头工具栏事件
+    table.on('toolbar(test)', function (obj) {
+      var checkStatus = table.checkStatus(obj.config.id);
+      switch (obj.event) {
+        case 'getCheckData':
+          var data = checkStatus.data;
+          console.log(data)
+
+          layer.alert(JSON.stringify(data));
+          break;
+      };
+    });
+
+    //监听行工具事件
+    table.on('tool(test)', function (obj) {
+      var data = obj.data;
+      if (obj.event === 'del') {
+        layer.confirm('真的删除这条数据吗？', function (index) {
+          $.ajax({
+            type: "DELETE",
+            url: layui.setter.api + "news/" + data.id ,
+            headers:{token:layui.data('layuiAdmin').token},
+            success: function (res) {
+              if (res.code === 200) {
+                obj.del();
+                layer.msg(res.msg, { icon: 6, time: 2000 })
+              } else {
+                layer.msg(res.msg, { icon: 5, time: 2000 })
+              }
+            }
+          })
+          layer.close(index);
+        });
+      } else if (obj.event === 'edit') {
+          $.ajax({
+            type: "GET",
+            url: layui.setter.api + "news/" + data.id,
+            headers:{token:layui.data('layuiAdmin').token},
+            success: function (res) {
+              if (res.code === 200) {
+                $('#edit .fr-view').html(res.data.content)
+                form.val('Tmptest', {
+                  "id": res.data.id
+                  , "title": res.data.title
+                  , "thumb": res.data.thumb
+                  , "description": res.data.desc
+                  , "zan": res.data.zan
+                  , "see_num": res.data.see_num
+                  , "seo_keyword": res.data.seo_keyword
+                  , "show": res.data.show == 1 ? true : false
+                  , "hot": res.data.hot == 1 ? true : false
+                  , "cate_id": res.data.cate_id
+                  , "type": res.data.type
+                });
+                layer.open(
+                  {
+                    title: '编辑新闻',
+                    type: 1,
+                    shade: false,
+                    content: $('#addNews'),
+                    area: ['966px', '756px'],
+                  }
+                )
+              } else {
+                layer.msg(res.msg, { icon: 5, time: 2000 })
+              }
+            }
+          })
+
+      } else if (obj.event === "showImg") {
+        layer.open({
+          type: 1,
+          title: false,
+          closeBtn: 0,
+          area: ['auto'],
+          skin: 'layui-layer-nobg', //没有背景色
+          shadeClose: true,
+          content: "<div><img style='max-width:600px' src='" + data.thumb + "' ></div>"
+        });
+      }
+    });
+
+    //显示开关
+    form.on('switch(show)', function (obj) {
+      var hot = obj.elem.checked ? 1 : 2
+      $.ajax({
+        type: "PUT",
+        url: layui.setter.api + "news/" + this.value + "/edit",
+        headers:{token:layui.data('layuiAdmin').token},
+        data: { show: hot },
+        dataType: "json",
+        success: function (res) {
+          if (res.code === 200) {
+            layer.msg(res.msg, { icon: 6, time: 2000 })
+          } else {
+            layer.msg(res.msg, { icon: 5, time: 2000 })
+          }
+        }
+      })
+    });
+
+    //热门开关
+    form.on('switch(hot)', function (obj) {
+      var hot = obj.elem.checked ? 1 : 2
+      $.ajax({
+        type: "PUT",
+        url: layui.setter.api + "news/" + this.value + "/edit",
+        headers:{token:layui.data('layuiAdmin').token},
+        data: { hot: hot },
+        dataType: "json",
+        success: function (res) {
+          if (res.code === 200) {
+            layer.msg(res.msg, { icon: 6, time: 2000 })
+          } else {
+            layer.msg(res.msg, { icon: 5, time: 2000 })
+          }
+        }
+      })
+    });
+
+    //渲染类别属性
+    $.getJSON('/json/json.json', function (res) {
+      // 使用laytpl模板渲染选项
+      laytpl($('#cate_id').html()).render(res.data, function (html) {
+        $('select[name="cate_id"]').html('<option value="0" selected>直接选择或搜索选择</option>'+html);
+        form.render('select');
+      });
+    });
+
+    //渲染类别属性
+    $.getJSON('/json/json.json', function (res) {
+      // 使用laytpl模板渲染选项
+      laytpl($('#product_id').html()).render(res.data, function (html) {
+        $('select[name="type"]').html(' <option value="0" selected>直接选择或搜索选择</option>'+html);
+        form.render('select');
+      });
+    });
+
+    //数据提交操作
+    form.on('submit(go)', function (data) {
+      var content = $('#edit .fr-view').html();
+      var hot = data.field.hot === "on" ? 1 : 2
+      var show = data.field.show === "on" ? 1 : 2
+      if (data.field.id !== "") {
+        url = layui.setter.api + "news/" + data.field.id + "/edit"
+        $.ajax({
+          type: "PUT",
+          url: url,
+          headers:{token:layui.data('layuiAdmin').token},
+          data: {
+            title: data.field.title, thumb: data.field.thumb, description: data.field.description, zan: data.field.zan, see_num: data.field.see_num,
+            seo_keyword: data.field.seo_keyword, content: content, show: show, hot: hot, type: data.field.type, cate_id: data.field.cate_id
+          },
+          dataType: "json",
+          success: function (res) {
+            if (res.code === 200) {
+              setTimeout(function () { layer.closeAll() }, 2000)
+              tableIns.reload({
+                page: {
+                  curr: 1 //重新从第 1 页开始
+                }
+              });
+              layer.msg(res.msg, { icon: 6, time: 2000 })
+            } else {
+              layer.msg(res.msg, { icon: 5, time: 2000 })
+            }
+          }
+        })
+
+      } else {
+        var url = layui.setter.api + 'news';
+        $.ajax({
+          type: "POST",
+          url: url,
+          headers:{token:layui.data('layuiAdmin').token},
+          data: {
+            title: data.field.title, thumb: data.field.thumb, description: data.field.description, zan: data.field.zan, see_num: data.field.see_num,
+            seo_keyword: data.field.seo_keyword, content: content, show: show, hot: hot, type: data.field.type, cate_id: data.field.cate_id
+          },
+          dataType: "json",
+          success: function (res) {
+            if (res.code === 200) {
+              setTimeout(function () { layer.closeAll() }, 2000)
+              tableIns.reload({
+                page: {
+                  curr: 1 //重新从第 1 页开始
+                }
+              });
+              layer.msg(res.msg, { icon: 6, time: 2000 })
+              form.val("Tmptest", { //formTest 即 class="layui-form" 所在元素属性 lay-filter="" 对应的值
+              "title": "" // "name": "value"
+              , "thumb": ""
+              , "description": ''
+              , "zan": ''
+              , "see_num": ''
+              , "seo_keyword": ""
+              , "show": true
+              , "hot": false
+              , "cate_id": 1
+              , "type": 1
+            });
+            $('#edit .fr-view').html("")
+            } else {
+              layer.msg(res.msg, { icon: 5, time: 2000 })
+            }
+          }
+        })
+      }
+      return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+    })
+
+
+    //允许上传的文件后缀
+    upload.render({
+      elem: '#test2'
+      , url: 'http://127.0.0.1:8080/api/v1/upload' //此处配置你自己的上传接口即可
+      , accept: 'file' //普通文件
+      , exts: 'png|jpg|jpeg|gif' //只允许上传压缩文件
+      , done: function (res) {
+        layer.msg('上传成功');
+        $("#imgs").attr("src",  res.link)
+        $("#logo").val(res.link)
+        if (res.code === 200) {
+          layer.msg('上传成功');
+          $("#imgs").attr("src",  res.link)
+          $("#logo").val(res.link)
+        }
+      }
+    });
+  });
+
+  function addNews() {
+
+    var $ = layui.jquery,form = layui.form
+    form.val("Tmptest", { //formTest 即 class="layui-form" 所在元素属性 lay-filter="" 对应的值
+    "title": "" // "name": "value"
+    , "thumb": ""
+    , "description": ''
+    , "zan": ''
+    , "see_num": ''
+    , "seo_keyword": ""
+    , "show": true
+    , "hot": false
+    , "cate_id": 1
+    , "type": 1
+  });
+  $('#edit .fr-view').html("")
+    layer.open(
+      {
+        title: '新增新闻',
+        type: 1,
+        shade: false,
+        content: $('#addNews'),
+        area: ['966px', '756px'],
+      }
+    )
+  }
+
+
+</script>
