@@ -134,7 +134,7 @@ func HGet(key, field string) (string, error) {
 }
 
 // HSet 设置键值 为hash-map
-func HSet(key, field, value string) error {
+func HSet(key, field string, value interface{}) error {
 	err := Redis.Do("HSET", key, field, value).Err()
 	if err != nil {
 		loggers.Logs(fmt.Sprint("RedisHSet Error!", key, "field:", field, "Details:", err.Error()))

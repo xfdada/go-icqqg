@@ -4,7 +4,7 @@
   ,"data": {
     "mine": {
       "username": "管理员1号"
-      ,"id": "100000"
+      ,"id": "996"
       ,"status": "online"
       ,"sign": "在深邃的编码世界，做一枚轻盈的纸飞机"
       ,"avatar": "http://127.0.0.1:8080/uploads/20230324/9d7f564aa5e716dbae961dd1f0c23d30.png"
@@ -14,13 +14,13 @@
       ,"id": 0
       ,"list": [{
         "username": "贤心"
-        ,"id": "76620d59-58da-4546-9cfb-442fa9bfdd70"
+        ,"id": "10086"
         ,"avatar": "http://127.0.0.1:8080/uploads/20230324/9d7f564aa5e716dbae961dd1f0c23d30.png"
         ,"sign": "这些都是测试数据，实际使用请严格按照该格式返回"
         ,"status": "online"
       },{
         "username": "刘涛tamia"
-        ,"id": "100001222"
+        ,"id": "10010"
         ,"sign": "如约而至，不负姊妹欢乐颂"
         ,"avatar": "//tva4.sinaimg.cn/crop.0.1.1125.1125.180/475bb144jw8f9nwebnuhkj20v90vbwh9.jpg"
       },{

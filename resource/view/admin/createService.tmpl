@@ -5,112 +5,112 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type {{.Model}} struct {
-{{- range $i,$v:=.Filed}}
-    {{$v.Name}}       {{$v.Type}}     `form:"{{$v.Column}}" json:"{{$v.Column}},omitempty"`    //{{$v.Comment}}
-{{- end}}
+type [[.Model]] struct {
+[[- range $i,$v:=.Filed]]
+    [[$v.Name]]       [[$v.Type]]     `form:"[[$v.Column]]" json:"[[$v.Column]],omitempty"`    //[[$v.Comment]]
+[[- end]]
 }
 
-func New{{.Model}}() *{{.Model}} {
-	return &{{.Model}}{}
+func New[[.Model]]() *[[.Model]] {
+	return &[[.Model]]{}
 }
 
 //List 数据列表
-//@Tags {{.Title}}模块
-//@Summary {{.Name}}列表
+//@Tags [[.Title]]模块
+//@Summary [[.Name]]列表
 //@Param token header string true "token"
 //@Produce json
-// @Success 200 {object} []model.{{.Model}} "{"code":200,"data":[]model.{{.Model}}}"
+// @Success 200 {object} []model.[[.Model]] "{"code":200,"data":[]model.[[.Model]]}"
 // @Failure 400 {object} response.Code "请求错误"
 // @Failure 500 {object} response.Code "内部错误"
-//@Router /api/web/{{.Path}}List [get]
-func (a *{{.Model}}) List(c *gin.Context) {
-	service := model.New{{.Model}}()
+//@Router /api/web/[[.Path]]List [get]
+func (a *[[.Model]]) List(c *gin.Context) {
+	service := model.New[[.Model]]()
 	service.List(c)
 	return
 }
 
 //Get 通过ID获取角色信息
-//@Tags {{.Title}}模块
-//@Summary 获取{{.Name}}信息
+//@Tags [[.Title]]模块
+//@Summary 获取[[.Name]]信息
 //@Param token header string true "token"
 //@Param id path int true "ID"
 //@Produce json
-// @Success 200 {object} model.{{.Model}} "{"code":200,"data":model.{{.Model}}}"
+// @Success 200 {object} model.[[.Model]] "{"code":200,"data":model.[[.Model]]}"
 // @Failure 400 {object} response.Code "请求错误"
 // @Failure 500 {object} response.Code "内部错误"
-//@Router /api/web/{{.Path}}/{id} [get]
-func (a *{{.Model}}) Get(c *gin.Context) {
+//@Router /api/web/[[.Path]]/{id} [get]
+func (a *[[.Model]]) Get(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
 		c.JSON(400, gin.H{"code": 400, "msg": "参数有误"})
 	} else {
-		service := model.New{{.Model}}()
+		service := model.New[[.Model]]()
 		service.GetOne(id, c)
 	}
 	return
 }
 
-//Add 新增{{.Name}}信息
-//@Tags {{.Title}}模块
-//@Summary 添加{{.Name}}信息
+//Add 新增[[.Name]]信息
+//@Tags [[.Title]]模块
+//@Summary 添加[[.Name]]信息
 //@Param token header string true "token"
-{{- range $i,$v:=.Filed}}
-//@Param {{$v.Column}} formData {{$v.Type}} true "{{$v.Comment}}"
-{{- end}}
+[[- range $i,$v:=.Filed]]
+//@Param [[$v.Column]] formData [[$v.Type]] true "[[$v.Comment]]"
+[[- end]]
 //@Produce json
 // @Success 200 {object} response.Code "{"code":200,"msg":"success"}"
 // @Failure 400 {object} response.Code "请求错误"
 // @Failure 500 {object} response.Code "内部错误"
-//@Router /api/web/{{.Path}} [post]
-func (a *{{.Model}}) Add(c *gin.Context) {
-    service := model.New{{.Model}}()
-    service.Add{{.Model}}(c)
+//@Router /api/web/[[.Path]] [post]
+func (a *[[.Model]]) Add(c *gin.Context) {
+    service := model.New[[.Model]]()
+    service.Add[[.Model]](c)
 	return
 }
 
-//Edit 修改{{.Name}}信息
-//@Tags {{.Title}}模块
-//@Summary 修改{{.Name}}信息
+//Edit 修改[[.Name]]信息
+//@Tags [[.Title]]模块
+//@Summary 修改[[.Name]]信息
 //@Param token header string true "token"
-{{- range $i,$v:=.Filed}}
-//@Param {{$v.Column}} formData {{$v.Type}} true "{{$v.Comment}}"
-{{- end}}
+[[- range $i,$v:=.Filed]]
+//@Param [[$v.Column]] formData [[$v.Type]] true "[[$v.Comment]]"
+[[- end]]
 //@Produce json
 // @Success 200 {object} response.Code "{"code":200,"msg":"success"}"
 // @Failure 400 {object} response.Code "请求错误"
 // @Failure 500 {object} response.Code "内部错误"
-//@Router /api/web/{{.Path}}/{id}/edit [put]
-func (a *{{.Model}}) Edit(c *gin.Context) {
+//@Router /api/web/[[.Path]]/{id}/edit [put]
+func (a *[[.Model]]) Edit(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
 		c.JSON(400, gin.H{"code": 400, "msg": "参数有误"})
 		c.Abort()
 		return
 	}
-    service := model.New{{.Model}}()
-    service.Update{{.Model}}(id,c)
+    service := model.New[[.Model]]()
+    service.Update[[.Model]](id,c)
 	return
 }
 
-//Delete 删除{{.Name}}信息
-//@Tags {{.Title}}模块
-//@Summary 删除{{.Name}}信息
+//Delete 删除[[.Name]]信息
+//@Tags [[.Title]]模块
+//@Summary 删除[[.Name]]信息
 //@Param token header string true "token"
 //@Param id path int true "ID"
 //@Produce json
 // @Success 200 {object} response.Code "{"code":200,"msg":"success"}"
 // @Failure 400 {object} response.Code "请求错误"
 // @Failure 500 {object} response.Code "内部错误"
-//@Router /api/web/{{.Path}}/{id} [delete]
-func (a *{{.Model}}) Delete(c *gin.Context) {
+//@Router /api/web/[[.Path]]/{id} [delete]
+func (a *[[.Model]]) Delete(c *gin.Context) {
 	id := c.Param("id")
 	if id == "" {
 		c.JSON(400, gin.H{"code": 400, "msg": "参数有误"})
 		c.Abort()
 		return
 	}
-	service := model.New{{.Model}}()
-	service.Delete{{.Model}}(id, c)
+	service := model.New[[.Model]]()
+	service.Delete[[.Model]](id, c)
 	return
 }

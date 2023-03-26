@@ -6,57 +6,57 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-//{{.Model}} {{.Name}}表
-type {{.Model}} struct {
+//[[.Model]] [[.Name]]表
+type [[.Model]] struct {
 	ID         int64      `gorm:"column:id;primaryKey;autoIncrement;type:int(11);" json:"id,omitempty"`
-	{{- range $i,$v:=.Filed}}
-	{{$v.Name}}       {{$v.Type}}     `gorm:"column:{{$v.Column}};type:{{$v.SqlType}}({{$v.Size}});" json:"{{$v.Column}},omitempty"` //{{$v.comment}}
-	{{- end}}
+	[[- range $i,$v:=.Filed]]
+	[[$v.Name]]       [[$v.Type]]     `gorm:"column:[[$v.Column]];type:[[$v.SqlType]]([[$v.Size]]);" json:"[[$v.Column]],omitempty"` //[[$v.comment]]
+	[[- end]]
 	CreatedAt  *LocalTime `gorm:"column:created_at" json:"created_at,omitempty"`
 	UpdatedAt  *LocalTime `gorm:"column:updated_at" json:"updated_at,omitempty"`
 	DeletedAt  *LocalTime `gorm:"column:deleted_at" json:"-,omitempty"`
 }
 
-type Add{{.Model}} struct {
-    {{- range $i,$v:=.Filed }}
-    {{$v.Name}}       {{$v.Type}}     `form:"{{$v.Column}}" json:"{{$v.Column}},omitempty"`//{{$v.Comment}}
-    {{- end}}
+type Add[[.Model]] struct {
+    [[- range $i,$v:=.Filed ]]
+    [[$v.Name]]       [[$v.Type]]     `form:"[[$v.Column]]" json:"[[$v.Column]],omitempty"`//[[$v.Comment]]
+    [[- end]]
 
 }
-func New{{.Model}}() *{{.Model}} {
-	db.AutoMigrate(&{{.Model}}{})
-	if !db.Migrator().HasTable(&{{.Model}}{}) {
-		db.Set("gorm:ENGINE", "InnoDB").Migrator().CreateTable(&{{.Model}}{})
+func New[[.Model]]() *[[.Model]] {
+	db.AutoMigrate(&[[.Model]]{})
+	if !db.Migrator().HasTable(&[[.Model]]{}) {
+		db.Set("gorm:ENGINE", "InnoDB").Migrator().CreateTable(&[[.Model]]{})
 	}
-	return &{{.Model}}{}
+	return &[[.Model]]{}
 }
-func (m *{{.Model}}) TableName() string {
-	return "{{.TableName}}"
+func (m *[[.Model]]) TableName() string {
+	return "[[.TableName]]"
 }
 
-//List 获取{{.Name}}列表展示的
+//List 获取[[.Name]]列表展示的
 //get
-func (m *{{.Model}}) List(c *gin.Context) {
-	var {{.Model}}List []{{.Model}}
-	err := db.Model(&{{.Model}}{}).Find(&{{.Model}}List).Error
+func (m *[[.Model]]) List(c *gin.Context) {
+	var [[.Model]]List [][[.Model]]
+	err := db.Model(&[[.Model]]{}).Find(&[[.Model]]List).Error
 	if err != nil {
 		config.ErrorLog(fmt.Sprintf("%v", err))
 		c.JSON(200, gin.H{"code": 500, "msg": "发送错误"})
 	} else {
-		c.JSON(200, gin.H{"code": 200, "data": {{.Model}}List})
+		c.JSON(200, gin.H{"code": 200, "data": [[.Model]]List})
 	}
 	c.Abort()
 }
 
-//Add{{.Model}} 新增{{.Name}}
+//Add[[.Model]] 新增[[.Name]]
 //post
-func (m *{{.Model}}) Add{{.Model}}( c *gin.Context) {
-	var add Add{{.Model}}
+func (m *[[.Model]]) Add[[.Model]]( c *gin.Context) {
+	var add Add[[.Model]]
 	err := c.ShouldBind(&add)
-	{{- range $i,$v:=.Filed }}
-	 m.{{$v.Name}} = add.{{$v.Name}}
-	{{- end}}
-	err = db.Model(&{{.Model}}{}).Create(&m).Error
+	[[- range $i,$v:=.Filed ]]
+	 m.[[$v.Name]] = add.[[$v.Name]]
+	[[- end]]
+	err = db.Model(&[[.Model]]{}).Create(&m).Error
 	if err != nil {
 		config.ErrorLog(fmt.Sprintf("%v", err))
 		c.JSON(200, gin.H{"code": 500, "msg": "failed"})
@@ -67,10 +67,10 @@ func (m *{{.Model}}) Add{{.Model}}( c *gin.Context) {
 }
 
 
-//Delete{{.Model}} 通过ID删除{{.Name}}
+//Delete[[.Model]] 通过ID删除[[.Name]]
 //delete
-func (m *{{.Model}}) Delete{{.Model}}(id string, c *gin.Context) {
-	err := db.Model(&{{.Model}}{}).Where("id = ?", id).Delete(m).Error
+func (m *[[.Model]]) Delete[[.Model]](id string, c *gin.Context) {
+	err := db.Model(&[[.Model]]{}).Where("id = ?", id).Delete(m).Error
 	if err != nil {
 		config.ErrorLog(fmt.Sprintf("%v", err))
 		c.JSON(200, gin.H{"code": 500, "msg": "failed"})
@@ -80,19 +80,19 @@ func (m *{{.Model}}) Delete{{.Model}}(id string, c *gin.Context) {
 	c.Abort()
 }
 
-//Update{{.Model}} 修改{{.Name}}
+//Update[[.Model]] 修改[[.Name]]
 //put
-func (m *{{.Model}}) Update{{.Model}}(id string,c *gin.Context) {
-    var add Add{{.Model}}
+func (m *[[.Model]]) Update[[.Model]](id string,c *gin.Context) {
+    var add Add[[.Model]]
 	err := c.ShouldBind(&add)
-	{{- range $i,$v:=.Filed }}
-	 m.{{$v.Name}} = add.{{$v.Name}}
-	{{- end}}
+	[[- range $i,$v:=.Filed ]]
+	 m.[[$v.Name]] = add.[[$v.Name]]
+	[[- end]]
     if err != nil {
     		config.ErrorLog(fmt.Sprintf("%v", err))
     		c.JSON(200, gin.H{"code": 500, "msg": "failed"})
     }else{
-        err := db.Model(&{{.Model}}{}).Where("id = ?", id).Updates(m).Error
+        err := db.Model(&[[.Model]]{}).Where("id = ?", id).Updates(m).Error
         if err != nil {
             config.ErrorLog(fmt.Sprintf("%v", err))
             c.JSON(200, gin.H{"code": 500, "msg": "failed"})
@@ -106,8 +106,8 @@ func (m *{{.Model}}) Update{{.Model}}(id string,c *gin.Context) {
 
 //GetOne 通过ID获取信息
 //get
-func (m *{{.Model}}) GetOne(id string, c *gin.Context) {
-	err := db.Model(&{{.Model}}{}).Where("id = ?", id).First(m).Error
+func (m *[[.Model]]) GetOne(id string, c *gin.Context) {
+	err := db.Model(&[[.Model]]{}).Where("id = ?", id).First(m).Error
 	if err != nil {
 		config.ErrorLog(fmt.Sprintf("%v", err))
 		c.JSON(200, gin.H{"code": 500, "msg": "failed"})
