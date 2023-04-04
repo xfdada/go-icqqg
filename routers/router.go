@@ -65,6 +65,7 @@ func NewRouter() *gin.Engine {
 	webProduct := web.NewProduct()
 	webRole := web.NewRole()
 	webNews := web.NewNews()
+	webAuto := web.NewAutoMessage()
 	r.Resource("/api/web/news", webNews)
 	r.GET("/api/web/getTree", webPermission.GetTree)
 	r.GET("/api/web/menuTree", webMenu.GetTree)
@@ -90,7 +91,7 @@ func NewRouter() *gin.Engine {
 		admin.Resource("/role", webRole)
 		admin.Resource("/menu", webMenu)
 		admin.Resource("/product", webProduct)
-
+		admin.Resource("/autoMessage", webAuto)
 	}
 
 	return r

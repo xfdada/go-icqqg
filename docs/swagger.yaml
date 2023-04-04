@@ -22,6 +22,57 @@ definitions:
         description: 用户名
         type: string
     type: object
+  model.AutoMessage:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      group_id:
+        type: string
+      id:
+        type: integer
+      is_default:
+        type: integer
+      send_sort:
+        type: integer
+      updated_at:
+        type: string
+    type: object
+  model.ImUser:
+    properties:
+      avatar:
+        description: 头像
+        type: string
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      group:
+        description: 归属站点
+        type: string
+      group_id:
+        description: 归属站点
+        type: string
+      id:
+        type: integer
+      ip:
+        description: IP地址
+        type: string
+      manage:
+        description: 归属管理员
+        type: string
+      updated_at:
+        type: string
+      user_id:
+        description: 用户ID
+        type: string
+      user_name:
+        description: 用户名
+        type: string
+    type: object
   model.Menu:
     properties:
       created_at:
@@ -45,51 +96,6 @@ definitions:
       url:
         description: 路由地址
         type: string
-    type: object
-  model.News:
-    properties:
-      cate_id:
-        description: 归属类别
-        type: integer
-      content:
-        description: 新闻内容
-        type: string
-      desc:
-        description: 新闻简介
-        type: string
-      hot:
-        description: 是否热门 1是 2否
-        type: integer
-      id:
-        description: id
-        type: integer
-      see_num:
-        description: 查看数量
-        type: integer
-      seo_keyword:
-        description: 新闻关键词
-        type: string
-      show:
-        description: 是否显示 1是 2 否
-        type: integer
-      tags:
-        description: 新闻tag
-        type: string
-      thumb:
-        description: 新闻图片
-        type: string
-      title:
-        description: 新闻标题
-        type: string
-      type:
-        description: 产品类型
-        type: integer
-      updated_at:
-        description: 更新时间
-        type: integer
-      zan:
-        description: 点赞数量
-        type: integer
     type: object
   model.Permissions:
     properties:
@@ -228,138 +234,6 @@ paths:
       summary: 生成验证码
       tags:
       - 固定接口
-  /api/v1/news:
-    post:
-      parameters:
-      - description: 新闻标题
-        in: formData
-        name: title
-        required: true
-        type: string
-      - description: 新闻描述
-        in: formData
-        name: desc
-        required: true
-        type: string
-      - description: 新闻图
-        in: formData
-        name: thumb
-        required: true
-        type: string
-      - description: 新闻关键词
-        in: formData
-        name: seo_keyword
-        required: true
-        type: string
-      - description: 新闻tag
-        in: formData
-        name: tags
-        required: true
-        type: string
-      - description: 新闻内容
-        in: formData
-        name: content
-        required: true
-        type: string
-      - description: 新闻类别
-        in: formData
-        name: cate_id
-        required: true
-        type: string
-      - description: 新闻点赞数
-        in: formData
-        name: zan
-        required: true
-        type: integer
-      - description: 新闻热门
-        in: formData
-        name: hot
-        required: true
-        type: integer
-      - description: 新闻查看数
-        in: formData
-        name: see_num
-        required: true
-        type: integer
-      - description: 新闻是否置顶
-        in: formData
-        name: type
-        required: true
-        type: integer
-      - description: 新闻是否显示
-        in: formData
-        name: show
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: '{"code": 200, "msg": "success"}'
-          schema:
-            $ref: '#/definitions/response.Code'
-        "400":
-          description: '{"code": 101, "msg": "参数错误"} 请求错误'
-          schema:
-            $ref: '#/definitions/response.Code'
-        "500":
-          description: '{"code": 102, "msg": "未找到结果"} 内部错误'
-          schema:
-            $ref: '#/definitions/response.Code'
-      summary: 新增新闻
-      tags:
-      - 新闻相关接口
-  /api/v1/news/{id}:
-    delete:
-      parameters:
-      - description: 新闻ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: '{"code": 200, "msg": "success"}'
-          schema:
-            $ref: '#/definitions/response.Code'
-        "400":
-          description: '{"code": 101, "msg": "参数错误"} 请求错误'
-          schema:
-            $ref: '#/definitions/response.Code'
-        "500":
-          description: '{"code": 102, "msg": "未找到结果"} 内部错误'
-          schema:
-            $ref: '#/definitions/response.Code'
-      summary: 删除新闻
-      tags:
-      - 新闻相关接口
-    get:
-      parameters:
-      - description: 新闻ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: 成功
-          schema:
-            $ref: '#/definitions/model.News'
-        "400":
-          description: 'code": 101, "msg": "参数错误"} "请求错误'
-          schema:
-            $ref: '#/definitions/response.Code'
-        "500":
-          description: 'code": 102, "msg": "未找到结果"} "内部错误'
-          schema:
-            type: string
-      summary: 通过ID获取新闻详细信息
-      tags:
-      - 新闻相关接口
   /api/v1/sendSms:
     post:
       parameters:
@@ -607,6 +481,268 @@ paths:
       summary: 用户更换头像
       tags:
       - 用户接口
+  /api/web/autoMessage:
+    post:
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 是否默认
+        in: formData
+        name: is_default
+        required: true
+        type: string
+      - description: 发送顺序
+        in: formData
+        name: send_sort
+        required: true
+        type: string
+      - description: 平台ID
+        in: formData
+        name: group_id
+        required: true
+        type: string
+      - description: 消息内容
+        in: formData
+        name: content
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"msg":"success"}'
+          schema:
+            $ref: '#/definitions/response.Code'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/response.Code'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/response.Code'
+      summary: 新增消息
+      tags:
+      - 自动发送消息模块
+  /api/web/autoMessage/{id}:
+    delete:
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"msg":"success"}'
+          schema:
+            $ref: '#/definitions/response.Code'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/response.Code'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/response.Code'
+      summary: 删除消息
+      tags:
+      - 自动发送消息模块
+    get:
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":model.AutoMessage}'
+          schema:
+            $ref: '#/definitions/model.AutoMessage'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/response.Code'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/response.Code'
+      summary: 获取消息
+      tags:
+      - 自动发送消息模块
+  /api/web/autoMessage/{id}/edit:
+    put:
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: 是否默认
+        in: formData
+        name: is_default
+        required: true
+        type: string
+      - description: 发送顺序
+        in: formData
+        name: send_sort
+        required: true
+        type: string
+      - description: 平台ID
+        in: formData
+        name: group_id
+        required: true
+        type: string
+      - description: 消息内容
+        in: formData
+        name: content
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"msg":"success"}'
+          schema:
+            $ref: '#/definitions/response.Code'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/response.Code'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/response.Code'
+      summary: 修改消息
+      tags:
+      - 自动发送消息模块
+  /api/web/autoMessageList:
+    get:
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":[]model.AutoMessage}'
+          schema:
+            items:
+              $ref: '#/definitions/model.AutoMessage'
+            type: array
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/response.Code'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/response.Code'
+      summary: 消息列表
+      tags:
+      - 自动发送消息模块
+  /api/web/imMessageList:
+    get:
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":[]model.AutoMessage}'
+          schema:
+            items:
+              $ref: '#/definitions/model.AutoMessage'
+            type: array
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/response.Code'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/response.Code'
+      summary: 消息列表
+      tags:
+      - 自动发送消息模块
+  /api/web/imUserList:
+    get:
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: page
+        in: query
+        name: page
+        type: string
+      - description: pageNum
+        in: query
+        name: pageNum
+        type: string
+      - description: start
+        in: query
+        name: start
+        type: string
+      - description: end
+        in: query
+        name: end
+        type: string
+      - description: manger
+        in: query
+        name: manger
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":[]model.ImUser}'
+          schema:
+            items:
+              $ref: '#/definitions/model.ImUser'
+            type: array
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/response.Code'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/response.Code'
+      summary: 产品列表
+      tags:
+      - 后台产品模块
   /api/web/menu:
     post:
       parameters:
@@ -1153,11 +1289,6 @@ paths:
         name: token
         required: true
         type: string
-      - description: ID
-        in: path
-        name: id
-        required: true
-        type: integer
       - description: 名称
         in: formData
         name: name

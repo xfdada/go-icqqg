@@ -364,7 +364,7 @@ layui.use(['admin', 'layim'], function(){
         ,submit: function(group, index){
           //一般在此执行Ajax和WS，以通知对方已经同意申请
           //……
-          
+          console.log(layim.cache().friend)
           //同意后，将好友追加到主面板
           layim.addList({
             type: user.type

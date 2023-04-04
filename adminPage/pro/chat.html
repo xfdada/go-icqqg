@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+    <script src="/layui/layui.js"></script>
+    <style>
+        .body {
+            position: relative;
+        }
+
+        .chat-log {
+            position: fixed;
+            right: 0;
+            top: 60%;
+            height: 70px;
+            width: 40px;
+            background: #eee;
+        }
+
+        #layui-layer2 {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="chat-log"></div>
+
+</body>
+<script src="/layui/lang/en.js"></script>
+<script>
+    layui.use(['layim'], function () {
+        var layim = layui.layim, $ = layui.$
+        //基础配置
+        // 创建 WebSocket 连接
+        var socket = new WebSocket('ws://127.0.0.1:8080/ws');
+
+        // 绑定 WebSocket 相关事件
+        socket.onopen = function () {
+            // 连接成功后，立即发送心跳包
+            // 发送握手包
+            if(localStorage.getItem('userid')){
+                socket.send(JSON.stringify({
+                    "username": "layim用户"
+                    , "type": 'friend'
+                    ,"id":localStorage.getItem('userid')
+                    ,"from":"10086"                
+                    , "avatar": "http://127.0.0.1:8080/uploads/20230324/9d7f564aa5e716dbae961dd1f0c23d30.png"
+                    ,"groupname":"icqqg"
+                    ,"groupid":"manage01"
+                }));
+            }else{
+                socket.send(JSON.stringify({
+                    "username": "layim用户"
+                    , "type": 'friend'
+                    ,"from":"10086"                
+                    , "avatar": "http://127.0.0.1:8080/uploads/20230324/9d7f564aa5e716dbae961dd1f0c23d30.png"
+                    ,"groupname":"icqqg"
+                    ,"groupid":"manage01"
+                }));
+            }
+        };
+
+        socket.onmessage = function (res) {
+            var data = JSON.parse(res.data);
+            // 处理服务器返回的消息
+          console.log(data)
+
+          if(data.type==="bind"){
+            console.log(localStorage.getItem('userid'))
+            if(localStorage.getItem('userid')){
+                layim.cache().mine.id = localStorage.getItem('userid')
+            }else{
+                layim.cache().mine.id = data.id
+                localStorage.setItem('userid',  data.id);
+            }
+
+          }
+          if(data.content){
+            layim.getMessage({
+                username: "管理员" //消息来源用户名
+                ,avatar: data.avatar//消息来源用户头像
+                ,id: "10086" //消息的来源ID（如果是私聊，则是用户id，如果是群聊，则是群组id）
+                ,type: "friend" //聊天窗口来源类型，从发送消息传递的to里面获取
+                ,content: data.content //消息内容
+                ,cid: 0 //消息id，可不传。除非你要对消息进行一些操作（如撤回）
+                ,mine: false //是否我发送的消息，如果为true，则会显示在右方
+                ,fromid: "100000" //消息的发送者id（比如群组中的某个消息发送者），可用于自动解决浏览器多窗口时的一些问题
+                // ,timestamp: 1467475443306 //服务端时间戳毫秒数。注意：如果你返回的是标准的 unix 时间戳，记得要 *1000
+            });
+          }
+
+        };
+
+        socket.onerror = function () {
+            console.error('layim init WebSocket error');
+        };
+
+        socket.onclose = function () {
+            console.log('layim init WebSocket closed');
+        };
+
+        layim.config({
+
+            init: {
+                mine: {
+                    "username": "用户", // 用户名
+                    "id": localStorage.getItem('userid'), // 用户ID
+                    "avatar": "http://cdn.layui.com/avatar/168.jpg" // 用户头像
+                },
+
+            }
+            , autoCreateWebSocket: false
+            ,brief: true
+        });
+        layim.on('sendMessage', function (data) {
+
+            socket.send(JSON.stringify({
+                "username": "深圳客户"
+                , "id": "10086"
+                , "type": 'friend'
+                ,"from":data.mine.id
+                ,"content":data.mine.content
+                , "avatar": "http://127.0.0.1:8080/uploads/20230324/9d7f564aa5e716dbae961dd1f0c23d30.png"
+                ,"groupname":"icqqg"
+                ,"groupid":"manage01"
+          }));
+        })
+    })
+
+    $(".chat-log").on("click", function () {
+        layui.use(['layim'], function () {
+            var layim = layui.layim, $ = layui.$
+            layim.chat({
+                name: '管理员'
+                , type: 'friend'
+                , avatar: '//tva3.sinaimg.cn/crop.0.0.180.180.180/7f5f6861jw1e8qgp5bmzyj2050050aa8.jpg'
+                , id: 10086
+            });
+        })
+    })
+
+</script>
+
+</html>

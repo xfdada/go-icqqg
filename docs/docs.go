@@ -50,201 +50,6 @@ const docTemplate_swagger = `{
                 }
             }
         },
-        "/api/v1/news": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "新闻相关接口"
-                ],
-                "summary": "新增新闻",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "新闻标题",
-                        "name": "title",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "新闻描述",
-                        "name": "desc",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "新闻图",
-                        "name": "thumb",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "新闻关键词",
-                        "name": "seo_keyword",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "新闻tag",
-                        "name": "tags",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "新闻内容",
-                        "name": "content",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "string",
-                        "description": "新闻类别",
-                        "name": "cate_id",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "新闻点赞数",
-                        "name": "zan",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "新闻热门",
-                        "name": "hot",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "新闻查看数",
-                        "name": "see_num",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "新闻是否置顶",
-                        "name": "type",
-                        "in": "formData",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "新闻是否显示",
-                        "name": "show",
-                        "in": "formData",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "{\"code\": 200, \"msg\": \"success\"}",
-                        "schema": {
-                            "$ref": "#/definitions/response.Code"
-                        }
-                    },
-                    "400": {
-                        "description": "{\"code\": 101, \"msg\": \"参数错误\"} 请求错误",
-                        "schema": {
-                            "$ref": "#/definitions/response.Code"
-                        }
-                    },
-                    "500": {
-                        "description": "{\"code\": 102, \"msg\": \"未找到结果\"} 内部错误",
-                        "schema": {
-                            "$ref": "#/definitions/response.Code"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/news/{id}": {
-            "get": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "新闻相关接口"
-                ],
-                "summary": "通过ID获取新闻详细信息",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "新闻ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "成功",
-                        "schema": {
-                            "$ref": "#/definitions/model.News"
-                        }
-                    },
-                    "400": {
-                        "description": "code\": 101, \"msg\": \"参数错误\"} \"请求错误",
-                        "schema": {
-                            "$ref": "#/definitions/response.Code"
-                        }
-                    },
-                    "500": {
-                        "description": "code\": 102, \"msg\": \"未找到结果\"} \"内部错误",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "新闻相关接口"
-                ],
-                "summary": "删除新闻",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "新闻ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "{\"code\": 200, \"msg\": \"success\"}",
-                        "schema": {
-                            "$ref": "#/definitions/response.Code"
-                        }
-                    },
-                    "400": {
-                        "description": "{\"code\": 101, \"msg\": \"参数错误\"} 请求错误",
-                        "schema": {
-                            "$ref": "#/definitions/response.Code"
-                        }
-                    },
-                    "500": {
-                        "description": "{\"code\": 102, \"msg\": \"未找到结果\"} 内部错误",
-                        "schema": {
-                            "$ref": "#/definitions/response.Code"
-                        }
-                    }
-                }
-            }
-        },
         "/api/v1/sendSms": {
             "post": {
                 "produces": [
@@ -611,6 +416,400 @@ const docTemplate_swagger = `{
                     },
                     "500": {
                         "description": "内部错误"
+                    }
+                }
+            }
+        },
+        "/api/web/autoMessage": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "自动发送消息模块"
+                ],
+                "summary": "新增消息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "是否默认",
+                        "name": "is_default",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "发送顺序",
+                        "name": "send_sort",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "平台ID",
+                        "name": "group_id",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "消息内容",
+                        "name": "content",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"msg\":\"success\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/autoMessage/{id}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "自动发送消息模块"
+                ],
+                "summary": "获取消息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":model.AutoMessage}",
+                        "schema": {
+                            "$ref": "#/definitions/model.AutoMessage"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "自动发送消息模块"
+                ],
+                "summary": "删除消息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"msg\":\"success\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/autoMessage/{id}/edit": {
+            "put": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "自动发送消息模块"
+                ],
+                "summary": "修改消息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "是否默认",
+                        "name": "is_default",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "发送顺序",
+                        "name": "send_sort",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "平台ID",
+                        "name": "group_id",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "消息内容",
+                        "name": "content",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"msg\":\"success\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/autoMessageList": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "自动发送消息模块"
+                ],
+                "summary": "消息列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":[]model.AutoMessage}",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.AutoMessage"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/imMessageList": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "自动发送消息模块"
+                ],
+                "summary": "消息列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":[]model.AutoMessage}",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.AutoMessage"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/imUserList": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后台产品模块"
+                ],
+                "summary": "产品列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "page",
+                        "name": "page",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "pageNum",
+                        "name": "pageNum",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "start",
+                        "name": "start",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "end",
+                        "name": "end",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "manger",
+                        "name": "manger",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":[]model.ImUser}",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.ImUser"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
                     }
                 }
             }
@@ -1442,13 +1641,6 @@ const docTemplate_swagger = `{
                         "required": true
                     },
                     {
-                        "type": "integer",
-                        "description": "ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
                         "type": "string",
                         "description": "名称",
                         "name": "name",
@@ -2202,6 +2394,80 @@ const docTemplate_swagger = `{
                 }
             }
         },
+        "model.AutoMessage": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "group_id": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "is_default": {
+                    "type": "integer"
+                },
+                "send_sort": {
+                    "type": "integer"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.ImUser": {
+            "type": "object",
+            "properties": {
+                "avatar": {
+                    "description": "头像",
+                    "type": "string"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "deleted_at": {
+                    "type": "string"
+                },
+                "group": {
+                    "description": "归属站点",
+                    "type": "string"
+                },
+                "group_id": {
+                    "description": "归属站点",
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "ip": {
+                    "description": "IP地址",
+                    "type": "string"
+                },
+                "manage": {
+                    "description": "归属管理员",
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                },
+                "user_id": {
+                    "description": "用户ID",
+                    "type": "string"
+                },
+                "user_name": {
+                    "description": "用户名",
+                    "type": "string"
+                }
+            }
+        },
         "model.Menu": {
             "type": "object",
             "properties": {
@@ -2233,67 +2499,6 @@ const docTemplate_swagger = `{
                 "url": {
                     "description": "路由地址",
                     "type": "string"
-                }
-            }
-        },
-        "model.News": {
-            "type": "object",
-            "properties": {
-                "cate_id": {
-                    "description": "归属类别",
-                    "type": "integer"
-                },
-                "content": {
-                    "description": "新闻内容",
-                    "type": "string"
-                },
-                "desc": {
-                    "description": "新闻简介",
-                    "type": "string"
-                },
-                "hot": {
-                    "description": "是否热门 1是 2否",
-                    "type": "integer"
-                },
-                "id": {
-                    "description": "id",
-                    "type": "integer"
-                },
-                "see_num": {
-                    "description": "查看数量",
-                    "type": "integer"
-                },
-                "seo_keyword": {
-                    "description": "新闻关键词",
-                    "type": "string"
-                },
-                "show": {
-                    "description": "是否显示 1是 2 否",
-                    "type": "integer"
-                },
-                "tags": {
-                    "description": "新闻tag",
-                    "type": "string"
-                },
-                "thumb": {
-                    "description": "新闻图片",
-                    "type": "string"
-                },
-                "title": {
-                    "description": "新闻标题",
-                    "type": "string"
-                },
-                "type": {
-                    "description": "产品类型",
-                    "type": "integer"
-                },
-                "updated_at": {
-                    "description": "更新时间",
-                    "type": "integer"
-                },
-                "zan": {
-                    "description": "点赞数量",
-                    "type": "integer"
                 }
             }
         },
