@@ -1,1 +1,4 @@
-[logger]2023/03/02 09:39:03 loggers.go:21: RedisSet Error! key:sms_5377Details:ERR invalid expire time in set
+[logger]2023/04/20 08:31:54 loggers.go:21: RedisHSet Error!10086field:10086Details:redis: can't marshal uintptr (implement encoding.BinaryMarshaler)
+[logger]2023/04/20 09:40:35 loggers.go:21: RedisHSet Error!c83eb0d8-b9e8-4bec-87cc-384565ff26e3field:c83eb0d8-b9e8-4bec-87cc-384565ff26e3Details:WRONGTYPE Operation against a key holding the wrong kind of value
+[logger]2023/04/20 09:42:32 loggers.go:21: RedisLLEN Error!c83eb0d8-b9e8-4bec-87cc-384565ff26e3Details:WRONGTYPE Operation against a key holding the wrong kind of value
+[logger]2023/04/21 02:12:15 loggers.go:21: RedisLLEN Error!10086Details:WRONGTYPE Operation against a key holding the wrong kind of value

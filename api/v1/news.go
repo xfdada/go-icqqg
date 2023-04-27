@@ -32,31 +32,37 @@ func (n News) Upload(c *gin.Context) {
 	if err != nil {
 		r.ErrorResp(response.UpdateError)
 	} else {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "http://127.0.0.1:5500/")
-		c.Header("Access-Control-Allow-Origin", "*")                                       // 这是允许访问所有域
-		c.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE,UPDATE") //服务器支持的所有跨域请求的方法,为了避免浏览次请求的多次'预检'请求
-		//  header的类型
-		c.Header("Access-Control-Allow-Headers", "Authorization, Content-Length, X-CSRF-Token, Token,session,X_Requested_With,Accept, Origin, Host, Connection, Accept-Encoding, Accept-Language,DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Pragma")
-		//              允许跨域设置                                                                                                      可以返回其他子段
-		c.Header("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers,Cache-Control,Content-Language,Content-Type,Expires,Last-Modified,Pragma,FooBar") // 跨域关键设置 让浏览器可以解析
-		c.Header("Access-Control-Max-Age", "172800")                                                                                                                                                           // 缓存请求信息 单位为秒
-		c.Header("Access-Control-Allow-Credentials", "false")                                                                                                                                                  //  跨域请求是否需要带cookie信息 默认设置为true
-		c.Set("content-type", "application/json")
+
 		c.JSON(200, gin.H{"link": "http://127.0.0.1:8080" + url})
 	}
 	c.Abort()
 	return
 }
-func (n News) Uploads(c *gin.Context) {
-	c.Writer.Header().Set("Access-Control-Allow-Origin", "http://127.0.0.1:5500/")
-	c.Header("Access-Control-Allow-Origin", "*")                                       // 这是允许访问所有域
-	c.Header("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE,UPDATE") //服务器支持的所有跨域请求的方法,为了避免浏览次请求的多次'预检'请求
-	//  header的类型
-	c.Header("Access-Control-Allow-Headers", "Authorization, Content-Length, X-CSRF-Token, Token,session,X_Requested_With,Accept, Origin, Host, Connection, Accept-Encoding, Accept-Language,DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Pragma")
-	// 允许跨域设置                                                                                                      可以返回其他子段
-	c.Header("Access-Control-Expose-Headers", "Content-Length, Access-Control-Allow-Origin, Access-Control-Allow-Headers,Cache-Control,Content-Language,Content-Type,Expires,Last-Modified,Pragma,FooBar") // 跨域关键设置 让浏览器可以解析
-	c.Header("Access-Control-Max-Age", "172800")                                                                                                                                                           // 缓存请求信息 单位为秒
-	c.Header("Access-Control-Allow-Credentials", "false")                                                                                                                                                  //  跨域请求是否需要带cookie信息 默认设置为true
-	c.Set("content-type", "application/json")
-	c.JSON(200, gin.H{"code": 200})
+
+// ImUpload
+//@Tags 图片上传接口
+//@Summary 图片上传
+// @Accept multipart/form-data
+// @Param file formData file true "file"
+//@Produce json
+//@Success 200   "成功"
+//@Success 200 {object} response.Code "{"code": 200, "msg": "success"}"
+//@Failure 400 {object} response.Code "{"code": 101, "msg": "参数错误"} 请求错误"
+//@Failure 500 {object} response.Code "{"code": 102, "msg": "未找到结果"} 内部错误"
+//@Router /api/v1/upload [post]
+func (n News) ImUpload(c *gin.Context) {
+	r := response.NewResponse(c)
+	file, fileHead, err := c.Request.FormFile("file")
+	if err != nil {
+		config.ErrorLog(fmt.Sprintf("%v", err))
+	}
+	url, err := upload.UploadFile(file, fileHead)
+	if err != nil {
+		r.ErrorResp(response.UpdateError)
+	} else {
+		data := map[string]string{"src": "http://127.0.0.1:8080" + url}
+		c.JSON(200, gin.H{"code": 200, "msg": "success", "data": data})
+	}
+	c.Abort()
+	return
 }

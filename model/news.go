@@ -80,7 +80,7 @@ func (m *News) List(c *gin.Context) {
 	c.Abort()
 }
 
-//AddProduct 新增产品
+//AddNews 新增新闻
 //post
 func (m *News) AddNews(c *gin.Context) {
 	var add AddNews

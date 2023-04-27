@@ -11,7 +11,7 @@
     }
     ,"friend": [{
       "groupname": "icqqg"
-      ,"id": 1
+      ,"id": "mang01"
       ,"list": []
     }]
   }

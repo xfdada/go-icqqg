@@ -39,7 +39,11 @@ func NewRouter() *gin.Engine {
 	user := v1.User{}
 	news := v1.News{}
 	im := im2.NewIm(upGrader)
+	imUser := v1.NewImUser()
+	imOffer := v1.NewImOffer()
+	r.GET("/api/v1/getList", imUser.List)
 	r.GET("/ws", im.Toke)
+	r.POST("/api/v1/offer", imOffer.Offer)
 	r.GET("/api/v1/captcha", v1.Captcha)
 	r.GET("/api/v1/table", v1.GetTable)
 	r.GET("/api/v1/table_info", v1.MyTable)
@@ -48,8 +52,8 @@ func NewRouter() *gin.Engine {
 	r.GET("/index.html", index.Index)
 	r.GET("/admin/helper", admin.Helpers)
 	r.POST("/api/v1/user", user.AddUser)
-	r.OPTIONS("/api/v1/upload", news.Uploads)
 	r.POST("/api/v1/upload", news.Upload)
+	r.POST("/api/v1/imUpload", news.ImUpload)
 	apiv1 := r.Group("api/v1")
 	indexUser := &index.User{}
 	apiv1.Use(middleware.Jwt(), middleware.Logger())
@@ -66,9 +70,22 @@ func NewRouter() *gin.Engine {
 	webRole := web.NewRole()
 	webNews := web.NewNews()
 	webAuto := web.NewAutoMessage()
+	ImUser := web.NewImUser()
+	ImMessage := web.NewImMessage()
+	ImCode := web.NewImCode()
+	webImOffer := web.NewImOffer()
+	webFlow := web.NewFlow()
+	r.GET("/api/web/flowList", webFlow.List)
+	r.GET("/api/web/flowHour", webFlow.GetByHour)
+	r.Resource("/api/web/imCode", ImCode)
+	r.Resource("/api/web/autoMessage", webAuto)
+	r.GET("/api/web/autoMessage/GetGroup", webAuto.GetGroup)
+	r.GET("/api/web/imUserList", ImUser.List)
+	r.GET("/api/web/imMessageList", ImMessage.List)
 	r.Resource("/api/web/news", webNews)
 	r.GET("/api/web/getTree", webPermission.GetTree)
 	r.GET("/api/web/menuTree", webMenu.GetTree)
+	r.GET("/api/web/imOfferList", webImOffer.List)
 	adminLogin := web.NewAdminLogin()
 	r.POST("/api/web/user/login", adminLogin.Login)
 	admin := r.Group("api/web")
@@ -88,10 +105,11 @@ func NewRouter() *gin.Engine {
 		admin.GET("/permission/:id", webPermission.GetPermission)
 		admin.GET("/permissionParent", webPermission.ParentList)
 		admin.GET("/permissionTree", webPermission.GetTree)
+
 		admin.Resource("/role", webRole)
 		admin.Resource("/menu", webMenu)
 		admin.Resource("/product", webProduct)
-		admin.Resource("/autoMessage", webAuto)
+
 	}
 
 	return r

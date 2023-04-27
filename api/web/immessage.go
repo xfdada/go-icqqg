@@ -22,6 +22,7 @@ func NewImMessage() *ImMessage {
 //@Router /api/web/imMessageList [get]
 func (a *ImMessage) List(c *gin.Context) {
 	service := model.NewImMessage()
-	service.List(c)
+	userId := c.Query("userId")
+	service.GetUserList(userId, c)
 	return
 }
