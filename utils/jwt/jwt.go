@@ -17,6 +17,7 @@ type Claims struct {
 }
 
 type AdminClaims struct {
+	ManageId  string `json:"manage_id,omitempty"`
 	UserName  string `json:"user_name,omitempty"`
 	Id        int64  `json:"id,omitempty"`
 	AppKey    string `json:"_"`
@@ -61,10 +62,11 @@ func ParseToken(token string) (*Claims, error) {
 }
 
 // GetAdminToken  生成token
-func GetAdminToken(userName string, id int64) (string, error) {
+func GetAdminToken(ManageId, userName string, id int64) (string, error) {
 	nowTime := time.Now()
 	expireTime := nowTime.Add(time.Second * config.AppConfig.Jwt.Expire)
 	claims := AdminClaims{
+		ManageId:  ManageId,
 		UserName:  userName,
 		Id:        id,
 		AppKey:    utils.EncodeMD5(config.AppConfig.Jwt.AppKey),

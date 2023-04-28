@@ -48,7 +48,7 @@ func SendSms(c *gin.Context) {
 // @Success 200 string json "{"id":"string","url":"sdfasfasd"}成功"
 // @Failure 400 string string "请求错误"
 // @Failure 500 string string "内部错误"
-//@Router /api/v1/captcha [get]
+//@Router /api/web/captcha [get]
 func Captcha(c *gin.Context) {
 	r := response.NewResponse(c)
 	id, url := captcha.GetCaptcha()

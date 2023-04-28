@@ -117,7 +117,7 @@ func (a *AutoMessage) Delete(c *gin.Context) {
 //@Param token header string true "token"
 //@Param group_id query string true "group_id"
 //@Produce json
-// @Success 200 {object} model.[]SendList "{"code":200,"data":model.[]AutoMessage}"
+// @Success 200 {object} model.SendList "{"code":200,"data":[]model.AutoMessage}"
 // @Failure 400 {object} response.Code "请求错误"
 // @Failure 500 {object} response.Code "内部错误"
 //@Router /api/web/autoMessage/GetGroup [get]

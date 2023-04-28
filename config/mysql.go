@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"gin-icqqg/utils/loggers"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -12,17 +13,19 @@ type Writer struct {
 }
 
 func (w Writer) Printf(format string, args ...interface{}) {
-	s := fmt.Sprintf(format, args...)
-	SqlLog(s)
+	if AppConfig.Mysql.DumpLog {
+		s := fmt.Sprintf(format, args...)
+		SqlLog(s)
+	}
 }
 
 func NewDB() (*gorm.DB, error) {
 	newLogger := logger.New(
 		Writer{}, // io writer
 		logger.Config{
-			SlowThreshold: 100 * time.Millisecond, // 慢 SQL 阈值
-			LogLevel:      logger.Info,            // Log level
-			Colorful:      false,                  // 禁用彩色打印
+			SlowThreshold: AppConfig.Mysql.SlowThreshold * time.Millisecond, // 慢 SQL 阈值
+			LogLevel:      logger.Info,                                      // Log level
+			Colorful:      false,                                            // 禁用彩色打印
 		},
 	)
 
@@ -31,13 +34,13 @@ func NewDB() (*gorm.DB, error) {
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{Logger: newLogger})
 	if err != nil {
 		msg := "初始化连接数据库失败，错误详情是err:" + fmt.Sprintf("%v\n", err)
-		fmt.Println(msg)
+		loggers.Logs(msg)
 		return nil, err
 	}
 	sqlDB, err1 := db.DB()
 	if err1 != nil {
 		msg := "初始化连接数据库失败，错误详情是err:" + fmt.Sprintf("%v\n", err1)
-		fmt.Println(msg)
+		loggers.Logs(msg)
 		return nil, err1
 	}
 	sqlDB.SetMaxIdleConns(AppConfig.Mysql.MaxIdleConns)

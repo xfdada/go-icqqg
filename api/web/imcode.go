@@ -62,7 +62,7 @@ func (a *ImCode) Get(c *gin.Context) {
 //@Router /api/web/imCode [post]
 func (a *ImCode) Add(c *gin.Context) {
 	service := model.NewImCode()
-	service.AddImCode(c)
+	service.AddImCode(Logins.ManageId, c)
 	return
 }
 

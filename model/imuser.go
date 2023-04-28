@@ -68,13 +68,13 @@ func (im *ImUser) List(c *gin.Context) {
 		query.Where("manger = ? ", manger)
 	}
 	if start != "" && end != "" {
-		err = query.Where("created_at BETWEEN ? AND ?", start, end).Find(&List).Error
+		err = query.Where("created_at BETWEEN ? AND ?", start, end).Order("created_at desc").Find(&List).Error
 		query.Where("created_at BETWEEN ? AND ?", start, end).Count(&total)
 	} else if start != "" && end == "" {
-		err = query.Where("created_at > ? ", start).Find(&List).Error
+		err = query.Where("created_at > ? ", start).Order("created_at desc").Find(&List).Error
 		query.Where("created_at > ? ", start).Count(&total)
 	} else if start == "" && end != "" {
-		err = query.Where("created_at < ? ", end).Find(&List).Error
+		err = query.Where("created_at < ? ", end).Order("created_at desc").Find(&List).Error
 		query.Where("created_at < ? ", end).Count(&total)
 	} else {
 		err = query.Find(&List).Error

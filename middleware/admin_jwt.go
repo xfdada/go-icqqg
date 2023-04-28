@@ -47,7 +47,7 @@ func AdminJwt() gin.HandlerFunc {
 					//判断 jwt 是否续签
 					claims := res.StandardClaims
 					if claims.ExpiresAt-time.Now().Unix() < config.AppConfig.Jwt.Renew {
-						newToken, _ := jwts.GetAdminToken(res.UserName, res.Id)
+						newToken, _ := jwts.GetAdminToken(res.ManageId, res.UserName, res.Id)
 						//将新的token注入到先赢头中
 						c.Header("token", newToken)
 					}

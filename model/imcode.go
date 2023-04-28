@@ -64,16 +64,16 @@ func (m *ImCode) List(c *gin.Context) {
 
 //AddImCode 新增代码
 //post
-func (m *ImCode) AddImCode(c *gin.Context) {
+func (m *ImCode) AddImCode(ManageId string, c *gin.Context) {
 	var add AddImCode
 	err := c.ShouldBind(&add)
-	fmt.Println(add)
 	if err != nil {
 		config.ErrorLog(fmt.Sprintf("%v", err))
 		c.JSON(200, gin.H{"code": 500, "msg": fmt.Sprintf("%v", err)})
 	} else {
 		m.Group = add.Group
 		m.GroupId = add.GroupId
+		m.Manger = ManageId
 		err = db.Model(&ImCode{}).Create(&m).Error
 		if err != nil {
 			config.ErrorLog(fmt.Sprintf("%v", err))

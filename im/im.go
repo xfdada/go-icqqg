@@ -72,7 +72,7 @@ func (im *Im) Toke(c *gin.Context) {
 		fmt.Println("消息序列化错误 :", err)
 		return
 	}
-	ipAddr = GetIpAddr("8.136.145.116")
+	ipAddr = GetIpAddr(c.ClientIP())
 	//生成UUID
 	connectionID := uuid.New().String()
 	var manageID string

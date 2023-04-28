@@ -1,8 +1,8 @@
 package admin
 
 type AdminUser struct {
-	UserName string
 	Id       int64
+	UserName string
 }
 
 var AdminInfo *AdminUser

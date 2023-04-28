@@ -10,10 +10,12 @@ Mysql:
   TablePrefix:  table_        #数据库表名前缀
   Charset:      utf8    #链接字符格式
   ParseTime:    True
+  DumpLog:      True #是否打印日志
   MaxIdleConns: 10
   MaxOpenConns: 30
   ConnMaxIdleTime:    120 #连接池空闲的最长时间 按照数据库中的值进行设置
   ConnMaxLifetime:    120 #可重用连接的最长时间
+  SlowThreshold:      500 #打印慢日志时间阈值
 
 
 Redis:

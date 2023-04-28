@@ -1,6 +1,7 @@
 package web
 
 import (
+	"fmt"
 	"gin-icqqg/model"
 	"github.com/gin-gonic/gin"
 )
@@ -29,5 +30,12 @@ func NewImUser() *ImUser {
 func (a *ImUser) List(c *gin.Context) {
 	service := model.NewImUser()
 	service.List(c)
+	return
+}
+
+func (im *ImUser) FriendList(c *gin.Context) {
+	user := model.NewImUser()
+	fmt.Println(Logins)
+	user.GetFriendList(Logins.ManageId, c)
 	return
 }

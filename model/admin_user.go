@@ -7,6 +7,7 @@ import (
 	"gin-icqqg/utils/jwt"
 	mypassword "gin-icqqg/utils/password"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 /**
@@ -21,6 +22,7 @@ type AdminUser struct {
 	Password      string     `gorm:"comment:密码;type:varchar;size:191;column:password"  json:"-,omitempty"`                         //密码
 	Name          string     `gorm:"comment:用户名;type:varchar;size:50;column:name"  json:"name,omitempty"`                          //名称
 	Avatar        string     `gorm:"comment:头像;type:varchar;size:255;column:avatar"  json:"avatar,omitempty"`                      //头像
+	ManageId      string     `gorm:"comment:管理员ID;type:varchar(255);column:manage_id"  json:"manage_id,omitempty"`                 //头像
 	RememberToken string     `gorm:"comment:免登录token;type:varchar;size:255;column:remember_token" json:"remember_token,omitempty"` //免登录token
 	IsOpen        int64      `gorm:"comment:是否启用;type:tinyint;size:3;column:is_open;default:1" json:"is_open,omitempty"`           //是否启用 1是 2否
 	CreatedAt     int64      ` gorm:"comment:创建时间;type:int;size:11;autoCreateTime"  json:"created_at,omitempty"`
@@ -92,6 +94,7 @@ func (u *AdminUser) AddUser(username, password, name string) (int64, error) {
 	u.UserName = username
 	u.Password, _ = mypassword.EncryptPassword(password)
 	u.Name = name
+	u.ManageId = uuid.New().String()
 	res := db.Save(&u)
 	return res.RowsAffected, res.Error
 }
@@ -119,8 +122,11 @@ func (u *AdminUser) UserLogin(username, password string, c *gin.Context) {
 		if !mypassword.EqualsPassword(password, u.Password) {
 			r.ErrorResp(response.CountError)
 		} else {
-			token, _ := jwt.GetAdminToken(u.UserName, u.ID)
-			r.SuccessResp(map[string]interface{}{"code": 200, "token": token})
+			fmt.Println(u)
+			token, _ := jwt.GetAdminToken(u.ManageId, u.UserName, u.ID)
+			tk := map[string]string{"token": token}
+			Data := map[string]interface{}{"code": 200, "msg": "success", "data": tk}
+			c.JSON(200, Data)
 		}
 	}
 	c.Abort()

@@ -4,7 +4,6 @@ import (
 	v1 "gin-icqqg/api/v1"
 	"gin-icqqg/api/web"
 	"gin-icqqg/config"
-	"gin-icqqg/controller/admin"
 	"gin-icqqg/controller/index"
 	_ "gin-icqqg/docs"
 	im2 "gin-icqqg/im"
@@ -44,13 +43,12 @@ func NewRouter() *gin.Engine {
 	r.GET("/api/v1/getList", imUser.List)
 	r.GET("/ws", im.Toke)
 	r.POST("/api/v1/offer", imOffer.Offer)
-	r.GET("/api/v1/captcha", v1.Captcha)
-	r.GET("/api/v1/table", v1.GetTable)
-	r.GET("/api/v1/table_info", v1.MyTable)
+	r.GET("/api/web/captcha", v1.Captcha)
+	//r.GET("/api/v1/table", v1.GetTable)
+	//r.GET("/api/v1/table_info", v1.MyTable)
 	r.POST("/api/v1/user/login", user.Login)
 	r.POST("/api/v1/sendSms", v1.SendSms)
 	r.GET("/index.html", index.Index)
-	r.GET("/admin/helper", admin.Helpers)
 	r.POST("/api/v1/user", user.AddUser)
 	r.POST("/api/v1/upload", news.Upload)
 	r.POST("/api/v1/imUpload", news.ImUpload)
@@ -71,6 +69,7 @@ func NewRouter() *gin.Engine {
 	webNews := web.NewNews()
 	webAuto := web.NewAutoMessage()
 	ImUser := web.NewImUser()
+
 	ImMessage := web.NewImMessage()
 	ImCode := web.NewImCode()
 	webImOffer := web.NewImOffer()
@@ -82,7 +81,7 @@ func NewRouter() *gin.Engine {
 	r.GET("/api/web/autoMessage/GetGroup", webAuto.GetGroup)
 	r.GET("/api/web/imUserList", ImUser.List)
 	r.GET("/api/web/imMessageList", ImMessage.List)
-	r.Resource("/api/web/news", webNews)
+
 	r.GET("/api/web/getTree", webPermission.GetTree)
 	r.GET("/api/web/menuTree", webMenu.GetTree)
 	r.GET("/api/web/imOfferList", webImOffer.List)
@@ -91,13 +90,14 @@ func NewRouter() *gin.Engine {
 	admin := r.Group("api/web")
 	admin.Use(middleware.AdminJwt())
 	{
+		admin.Resource("news", webNews)
 		admin.POST("/user", webUser.AddUser)
 		admin.GET("/user", webUser.SelfInfo)
 		admin.DELETE("/user/:username", webUser.DelUser)
 		admin.GET("/userList", webUser.UserList)
 		admin.PUT("/userIsOpen", webUser.IsOpen)
 		admin.GET("/user/logout", adminLogin.LogOut)
-
+		admin.GET("/getFriendList", ImUser.FriendList)
 		admin.GET("/permissionList", webPermission.List)
 		admin.POST("/permission", webPermission.AddPermission)
 		admin.DELETE("/permission/:id", webPermission.DeletePermission)

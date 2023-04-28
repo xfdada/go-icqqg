@@ -22,10 +22,12 @@ type Mysql struct {
 	Charset         string
 	TablePrefix     string
 	ParseTime       bool
+	DumpLog         bool
 	MaxIdleConns    int
 	MaxOpenConns    int
 	ConnMaxIdleTime time.Duration
 	ConnMaxLifetime time.Duration
+	SlowThreshold   time.Duration
 }
 
 type Redis struct {
