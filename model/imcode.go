@@ -34,16 +34,21 @@ func (msg *ImCode) TableName() string {
 	return "table_imcode"
 }
 
-//List 获取产品列表展示的
+//List 获取客服代码列表
 //get
-func (m *ImCode) List(c *gin.Context) {
+func (m *ImCode) List(manageId string, c *gin.Context) {
 	var NewsList []ImCode
 	page := c.Query("page")
 	pageSize := c.Query("pageSize")
 	pageInt, _ := strconv.ParseInt(page, 10, 64)
 	pageSizeInt, _ := strconv.ParseInt(pageSize, 10, 64)
 	dbpage := Paginate(int(pageInt), int(pageSizeInt))
-	err := dbpage(db).Model(&ImCode{}).Find(&NewsList).Error
+	var err error
+	if manageId == "10086" {
+		err = dbpage(db).Model(&ImCode{}).Find(&NewsList).Error
+	} else {
+		err = dbpage(db).Model(&ImCode{}).Where("manger = ?", manageId).Find(&NewsList).Error
+	}
 	if err != nil {
 		config.ErrorLog(fmt.Sprintf("%v", err))
 		c.JSON(200, gin.H{"code": 500, "msg": "发送错误"})
@@ -53,7 +58,11 @@ func (m *ImCode) List(c *gin.Context) {
 		Res = make(map[string]interface{})
 		Res["data"] = NewsList
 		Res["page"] = page
-		db.Model(&ImCode{}).Count(&count)
+		if manageId == "10086" {
+			db.Model(&ImCode{}).Count(&count)
+		} else {
+			db.Model(&ImCode{}).Where("manger = ?", manageId).Count(&count)
+		}
 		Res["count"] = count
 		Res["code"] = 0
 		Res["msg"] = ""

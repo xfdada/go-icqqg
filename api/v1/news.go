@@ -33,7 +33,7 @@ func (n News) Upload(c *gin.Context) {
 		r.ErrorResp(response.UpdateError)
 	} else {
 
-		c.JSON(200, gin.H{"link": "http://127.0.0.1:8080" + url})
+		c.JSON(200, gin.H{"link": config.AppConfig.Server.Host + url})
 	}
 	c.Abort()
 	return
@@ -60,7 +60,7 @@ func (n News) ImUpload(c *gin.Context) {
 	if err != nil {
 		r.ErrorResp(response.UpdateError)
 	} else {
-		data := map[string]string{"src": "http://127.0.0.1:8080" + url}
+		data := map[string]string{"src": config.AppConfig.Server.Host + url}
 		c.JSON(200, gin.H{"code": 200, "msg": "success", "data": data})
 	}
 	c.Abort()

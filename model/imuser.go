@@ -123,7 +123,7 @@ func (im *ImUser) GetFriendList(manger string, c *gin.Context) {
 	today := time.Now().Truncate(24 * time.Hour)
 	tomorrow := today.Add(24 * time.Hour)
 
-	err := db.Model(&ImUser{}).Group("group").Select("group", "group_id").Scan(&result).Error
+	err := db.Model(&ImUser{}).Where("manage = ?", manger).Group("group").Select("group", "group_id").Scan(&result).Error
 	if err != nil {
 		config.ErrorLog(fmt.Sprintf("管理员获取好友列表错误：%v", err))
 		c.JSON(200, gin.H{"code": 500, "msg": "获取错误"})

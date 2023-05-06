@@ -23,7 +23,7 @@ func NewImCode() *ImCode {
 //@Router /api/web/imCodeList [get]
 func (a *ImCode) List(c *gin.Context) {
 	service := model.NewImCode()
-	service.List(c)
+	service.List(Logins.ManageId, c)
 	return
 }
 
@@ -48,9 +48,9 @@ func (a *ImCode) Get(c *gin.Context) {
 	return
 }
 
-//Add 新增产品信息
-//@Tags 后台产品模块
-//@Summary 添加产品信息
+//Add 新增客服代码信息
+//@Tags 客服代码模块
+//@Summary 添加客服代码
 //@Param token header string true "token"
 //@Param name formData string true "名称"
 //@Param title formData string true "标题"

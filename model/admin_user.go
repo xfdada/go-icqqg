@@ -122,7 +122,6 @@ func (u *AdminUser) UserLogin(username, password string, c *gin.Context) {
 		if !mypassword.EqualsPassword(password, u.Password) {
 			r.ErrorResp(response.CountError)
 		} else {
-			fmt.Println(u)
 			token, _ := jwt.GetAdminToken(u.ManageId, u.UserName, u.ID)
 			tk := map[string]string{"token": token}
 			Data := map[string]interface{}{"code": 200, "msg": "success", "data": tk}

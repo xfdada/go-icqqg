@@ -118,13 +118,6 @@
             
         },
         {
-            "title": "内容管理",
-            "icon": "layui-icon-read",
-            "name": "content",
-            "jump": "content/"
-            
-        },
-        {
             "title": "客服-用户",
             "icon": "layui-icon-read",
             "name": "content",

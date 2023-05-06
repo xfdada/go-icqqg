@@ -17,7 +17,6 @@ func AdminJwt() gin.HandlerFunc {
 			token string
 			eCode = response.Success
 		)
-
 		if s, exist := c.GetQuery("token"); exist {
 			token = s
 		} else {
@@ -37,6 +36,7 @@ func AdminJwt() gin.HandlerFunc {
 				}
 			} else {
 				web.Logins = &web.LoginUser{
+					ManageId: res.ManageId,
 					UserName: res.UserName,
 					Id:       res.Id,
 				}
@@ -48,7 +48,7 @@ func AdminJwt() gin.HandlerFunc {
 					claims := res.StandardClaims
 					if claims.ExpiresAt-time.Now().Unix() < config.AppConfig.Jwt.Renew {
 						newToken, _ := jwts.GetAdminToken(res.ManageId, res.UserName, res.Id)
-						//将新的token注入到先赢头中
+						//将新的token注入到响应头中
 						c.Header("token", newToken)
 					}
 				}

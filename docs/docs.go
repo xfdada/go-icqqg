@@ -19,37 +19,6 @@ const docTemplate_swagger = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/v1/captcha": {
-            "get": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "固定接口"
-                ],
-                "summary": "生成验证码",
-                "responses": {
-                    "200": {
-                        "description": "{\"id\":\"string\",\"url\":\"sdfasfasd\"}成功",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "400": {
-                        "description": "请求错误",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "内部错误",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/api/v1/sendSms": {
             "post": {
                 "produces": [
@@ -488,6 +457,53 @@ const docTemplate_swagger = `{
                 }
             }
         },
+        "/api/web/autoMessage/GetGroup": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "自动发送消息模块"
+                ],
+                "summary": "获取消息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "group_id",
+                        "name": "group_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":[]model.AutoMessage}",
+                        "schema": {
+                            "$ref": "#/definitions/model.SendList"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
         "/api/web/autoMessage/{id}": {
             "get": {
                 "produces": [
@@ -680,6 +696,294 @@ const docTemplate_swagger = `{
                             "type": "array",
                             "items": {
                                 "$ref": "#/definitions/model.AutoMessage"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/captcha": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "固定接口"
+                ],
+                "summary": "生成验证码",
+                "responses": {
+                    "200": {
+                        "description": "{\"id\":\"string\",\"url\":\"sdfasfasd\"}成功",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/imCode": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后台产品模块"
+                ],
+                "summary": "添加产品信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "名称",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "标题",
+                        "name": "title",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "型号",
+                        "name": "version",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"msg\":\"success\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/imCode/{id}": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后台产品模块"
+                ],
+                "summary": "获取产品信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":model.Product}",
+                        "schema": {
+                            "$ref": "#/definitions/model.Product"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后台产品模块"
+                ],
+                "summary": "删除产品信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"msg\":\"success\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/imCode/{id}/edit": {
+            "put": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后台产品模块"
+                ],
+                "summary": "修改产品信息",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "名称",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "标题",
+                        "name": "title",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "型号",
+                        "name": "version",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"msg\":\"success\"}",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "400": {
+                        "description": "请求错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    },
+                    "500": {
+                        "description": "内部错误",
+                        "schema": {
+                            "$ref": "#/definitions/response.Code"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/web/imCodeList": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "后台产品模块"
+                ],
+                "summary": "产品列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\":200,\"data\":[]model.Product}",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/model.Product"
                             }
                         }
                     },
@@ -2380,6 +2684,10 @@ const docTemplate_swagger = `{
                     "description": "是否启用 1是 2否",
                     "type": "integer"
                 },
+                "manage_id": {
+                    "description": "头像",
+                    "type": "string"
+                },
                 "name": {
                     "description": "名称",
                     "type": "string"
@@ -2412,9 +2720,6 @@ const docTemplate_swagger = `{
                 "id": {
                     "type": "integer"
                 },
-                "is_default": {
-                    "type": "integer"
-                },
                 "send_sort": {
                     "type": "integer"
                 },
@@ -2445,24 +2750,28 @@ const docTemplate_swagger = `{
                     "type": "string"
                 },
                 "id": {
-                    "type": "integer"
+                    "description": "用户ID",
+                    "type": "string"
                 },
                 "ip": {
                     "description": "IP地址",
                     "type": "string"
                 },
+                "list_id": {
+                    "type": "integer"
+                },
                 "manage": {
                     "description": "归属管理员",
+                    "type": "string"
+                },
+                "origin": {
+                    "description": "流量来源",
                     "type": "string"
                 },
                 "updated_at": {
                     "type": "string"
                 },
-                "user_id": {
-                    "description": "用户ID",
-                    "type": "string"
-                },
-                "user_name": {
+                "username": {
                     "description": "用户名",
                     "type": "string"
                 }
@@ -2588,6 +2897,23 @@ const docTemplate_swagger = `{
                 "updated_at": {
                     "description": "更新时间",
                     "type": "string"
+                }
+            }
+        },
+        "model.SendList": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "description": "发送内容",
+                    "type": "string"
+                },
+                "group_id": {
+                    "description": "平台ID",
+                    "type": "string"
+                },
+                "send_sort": {
+                    "description": "发送顺序",
+                    "type": "integer"
                 }
             }
         },

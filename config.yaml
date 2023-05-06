@@ -1,6 +1,7 @@
 Server:
   Port:     :8080
-  Model:    debug
+  Model:    debug #release
+  Host: http://127.0.0.1:5500  #访问域名
 #mysql
 Mysql:
   Username:     root    #用户名
@@ -26,15 +27,15 @@ Redis:
 Jwt:
   AppKey:  xfdada    #AppKey
   AppSecret: papapa  #AppSecret
-  Expire:    7200  # 过期时间
-  Renew:     600  # 后台token续签时间
+  Expire:    24  # 过期时间 Hour
+  Renew:     2  # 后台token续签时间 Hour
   Issuer:    xf
 
 Logger:
   AppPath: D:/GOAPP/src/gin-icqqg/runtime/app       #请求日志存储位置
   AppLevel: info
   SqlPath: D:/GOAPP/src/gin-icqqg/runtime/sql       #SQL日志存储位置
-  SqlLevel: info
+  SqlLevel: error
   ErrorPath: D:/GOAPP/src/gin-icqqg/runtime/error
   ErrorLevel: info
 Upload:

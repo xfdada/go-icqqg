@@ -113,6 +113,10 @@ type Data struct {
 	UserId string `json:"user_id,omitempty"`
 	IP     string `json:"ip,omitempty"`
 }
+type DailyData struct {
+	Date  string
+	Count int
+}
 
 func (f *Flow) GetByHour(c *gin.Context) {
 	var results []struct {
@@ -121,13 +125,61 @@ func (f *Flow) GetByHour(c *gin.Context) {
 		Pv   int    `json:"pv,omitempty"`
 		Ip   int    `json:"ip,omitempty"`
 	}
+	dailyData := []DailyData{}
 
+	weekTimes := make([]string, 7)
+	counts := make([]int, 7)
+	now := time.Now()
+	for i := 7; i > 0; i-- {
+		date := now.AddDate(0, 0, -i) // 获取相对于当前时间的偏移日期
+		month := date.Month()         // 获取月份
+		day := date.Day()             // 获取日子
+		weekTimes[7-i] = fmt.Sprintf("%d-%d", month, day)
+	}
+	db.Raw(`
+    SELECT DATE(created_at) AS date, COUNT(*) AS count
+    FROM table_flow
+    WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY) and is_new = 1
+    GROUP BY DATE(created_at)
+    ORDER BY date ASC;
+`).Scan(&dailyData)
+	for _, row := range dailyData {
+		date, _ := time.Parse(time.RFC3339, row.Date)
+		weekTime := date.Format("1-2")
+		index := getIndex(weekTimes, weekTime)
+		if index != -1 {
+			counts[index] = row.Count
+		}
+	}
+	var hours map[string][]int
+	hours = make(map[string][]int)
+	hours["ip"] = make([]int, 24)
+	hours["uv"] = make([]int, 24)
+	hours["pv"] = make([]int, 24)
 	startTime := time.Date(time.Now().Year(), time.Now().Month(), time.Now().Day(), 0, 0, 0, 0, time.Local) // 获取今天的起始时间
 	db.Model(&Flow{}).Where("created_at >= ? AND created_at < ?", startTime, startTime.Add(24*time.Hour)).
-		Select("DATE_FORMAT(created_at, '%H:00') AS hour,COUNT(ip) AS ip, COUNT(user_id) AS uv,SUM(page_num) AS pv").
+		Select("DATE_FORMAT(created_at, '%H') AS hour,COUNT(ip) AS ip, COUNT(user_id) AS uv,SUM(page_num) AS pv").
 		Group("hour").
 		Order("hour").
 		Scan(&results)
-	c.JSON(200, results)
+
+	for _, v := range results {
+		k, _ := strconv.ParseInt(v.Hour, 10, 64)
+		hours["ip"][k] = v.Ip
+		hours["uv"][k] = v.Uv
+		hours["pv"][k] = v.Pv
+	}
+	data := map[string]interface{}{"hour": hours, "week": weekTimes, "count": counts}
+	Res := map[string]interface{}{"code": 200, "data": data}
+	c.JSON(200, Res)
 	c.Abort()
+}
+
+func getIndex(slice []string, value string) int {
+	for i, v := range slice {
+		if v == value {
+			return i
+		}
+	}
+	return -1
 }

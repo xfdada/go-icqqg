@@ -3,7 +3,9 @@ package config
 import "time"
 
 type Server struct {
-	Port string
+	Model string
+	Port  string
+	Host  string
 }
 
 type Jwt struct {

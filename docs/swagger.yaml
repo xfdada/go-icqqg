@@ -12,6 +12,9 @@ definitions:
       is_open:
         description: 是否启用 1是 2否
         type: integer
+      manage_id:
+        description: 头像
+        type: string
       name:
         description: 名称
         type: string
@@ -34,8 +37,6 @@ definitions:
         type: string
       id:
         type: integer
-      is_default:
-        type: integer
       send_sort:
         type: integer
       updated_at:
@@ -57,19 +58,22 @@ definitions:
         description: 归属站点
         type: string
       id:
-        type: integer
+        description: 用户ID
+        type: string
       ip:
         description: IP地址
         type: string
+      list_id:
+        type: integer
       manage:
         description: 归属管理员
         type: string
+      origin:
+        description: 流量来源
+        type: string
       updated_at:
         type: string
-      user_id:
-        description: 用户ID
-        type: string
-      user_name:
+      username:
         description: 用户名
         type: string
     type: object
@@ -159,6 +163,18 @@ definitions:
         description: 更新时间
         type: string
     type: object
+  model.SendList:
+    properties:
+      content:
+        description: 发送内容
+        type: string
+      group_id:
+        description: 平台ID
+        type: string
+      send_sort:
+        description: 发送顺序
+        type: integer
+    type: object
   model.User:
     properties:
       avatar:
@@ -214,26 +230,6 @@ info:
   title: ICQQG接囗文档
   version: "1.0"
 paths:
-  /api/v1/captcha:
-    get:
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: '{"id":"string","url":"sdfasfasd"}成功'
-          schema:
-            type: string
-        "400":
-          description: 请求错误
-          schema:
-            type: string
-        "500":
-          description: 内部错误
-          schema:
-            type: string
-      summary: 生成验证码
-      tags:
-      - 固定接口
   /api/v1/sendSms:
     post:
       parameters:
@@ -639,6 +635,37 @@ paths:
       summary: 修改消息
       tags:
       - 自动发送消息模块
+  /api/web/autoMessage/GetGroup:
+    get:
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: group_id
+        in: query
+        name: group_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":[]model.AutoMessage}'
+          schema:
+            $ref: '#/definitions/model.SendList'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/response.Code'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/response.Code'
+      summary: 获取消息
+      tags:
+      - 自动发送消息模块
   /api/web/autoMessageList:
     get:
       parameters:
@@ -667,6 +694,197 @@ paths:
       summary: 消息列表
       tags:
       - 自动发送消息模块
+  /api/web/captcha:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"id":"string","url":"sdfasfasd"}成功'
+          schema:
+            type: string
+        "400":
+          description: 请求错误
+          schema:
+            type: string
+        "500":
+          description: 内部错误
+          schema:
+            type: string
+      summary: 生成验证码
+      tags:
+      - 固定接口
+  /api/web/imCode:
+    post:
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 名称
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: 标题
+        in: formData
+        name: title
+        required: true
+        type: string
+      - description: 型号
+        in: formData
+        name: version
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"msg":"success"}'
+          schema:
+            $ref: '#/definitions/response.Code'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/response.Code'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/response.Code'
+      summary: 添加产品信息
+      tags:
+      - 后台产品模块
+  /api/web/imCode/{id}:
+    delete:
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"msg":"success"}'
+          schema:
+            $ref: '#/definitions/response.Code'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/response.Code'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/response.Code'
+      summary: 删除产品信息
+      tags:
+      - 后台产品模块
+    get:
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":model.Product}'
+          schema:
+            $ref: '#/definitions/model.Product'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/response.Code'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/response.Code'
+      summary: 获取产品信息
+      tags:
+      - 后台产品模块
+  /api/web/imCode/{id}/edit:
+    put:
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 名称
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: 标题
+        in: formData
+        name: title
+        required: true
+        type: string
+      - description: 型号
+        in: formData
+        name: version
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"msg":"success"}'
+          schema:
+            $ref: '#/definitions/response.Code'
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/response.Code'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/response.Code'
+      summary: 修改产品信息
+      tags:
+      - 后台产品模块
+  /api/web/imCodeList:
+    get:
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: '{"code":200,"data":[]model.Product}'
+          schema:
+            items:
+              $ref: '#/definitions/model.Product'
+            type: array
+        "400":
+          description: 请求错误
+          schema:
+            $ref: '#/definitions/response.Code'
+        "500":
+          description: 内部错误
+          schema:
+            $ref: '#/definitions/response.Code'
+      summary: 产品列表
+      tags:
+      - 后台产品模块
   /api/web/imMessageList:
     get:
       parameters:

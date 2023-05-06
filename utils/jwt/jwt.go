@@ -64,7 +64,7 @@ func ParseToken(token string) (*Claims, error) {
 // GetAdminToken  生成token
 func GetAdminToken(ManageId, userName string, id int64) (string, error) {
 	nowTime := time.Now()
-	expireTime := nowTime.Add(time.Second * config.AppConfig.Jwt.Expire)
+	expireTime := nowTime.Add(time.Hour * config.AppConfig.Jwt.Expire)
 	claims := AdminClaims{
 		ManageId:  ManageId,
 		UserName:  userName,
@@ -78,7 +78,7 @@ func GetAdminToken(ManageId, userName string, id int64) (string, error) {
 	}
 	tokenClaims := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	token, err := tokenClaims.SignedString(GetJWTSecret())
-	redis.Set(userName, token, time.Second*config.AppConfig.Jwt.Expire)
+	redis.Set(userName, token, time.Hour*config.AppConfig.Jwt.Expire)
 	return token, err
 }
 
