@@ -64,8 +64,8 @@ Captcha:
   DotCount:     50    #杂点数量
 
 AlySms:
-  AliYunSmsAk: LTAI5tPsRNrnEYL5iLe35NHKSF  #key
-  AliYunSmsAs: 21duqB7Q7lR879kQatSluzpzIxmbS4pt   # 密钥
-  SingName: IC全球购      #签名
-  Code:  SMS_233905496         #模板
+  AliYunSmsAk: LTAI5tPs  #key
+  AliYunSmsAs: 21duqB7   # 密钥
+  SingName:  ####      #签名
+  Code:  SMS_####         #模板
   Expiration: 300             #验证码有效时间
